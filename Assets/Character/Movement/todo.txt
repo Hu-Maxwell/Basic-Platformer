@@ -1,0 +1,16 @@
+X. buffer for normal jump (time)
+	- if isJumping and hasDoubleJumped is true , and space pressed
+		- sets a timer for .2 seconds
+		- in this .2 second time frame, if isGrounded = true, jump
+
+X. buffer for normal jump (distance)
+	- if the user has both jumped and doublejumped, and if jump is pressed when the character is X dist from floor, it will jump once isGrounded is true
+	- if the user has jumped and is too close to the floor, it will skip a double jump and wait until the floor is touched
+
+	- tested; there are many flaws with this method. 
+		- firstly, it doesn't take into account a dash - if the user presses dash then jump very early on in the dash, and is close to the floor, then the user might get a very very delayed jump
+		- it isn't really scalable with slower fall speeds. if the user is falling really slow, the jump buffer might feel really delayed
+		- and lastly, the functionality of switching a double jump to a normal jump isn't really too useful. not many players will try to double jump last second
+
+- coyote time for normal jump
+- if too close to floor, don't double jump. instead just buffer normal jump
