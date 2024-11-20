@@ -31,7 +31,7 @@ public void Walk(float direction)
 }
 ```
 
-This walking system uses forces to accelerate, decelerate, and maintain speed. To calculate the force, it first needs to make a few calculations to determine the force applied: 
+This walking system uses forces to accelerate, decelerate, and maintain speed.  
 
 1. `targetSpeed`
 
@@ -39,11 +39,11 @@ This walking system uses forces to accelerate, decelerate, and maintain speed. T
 
 2. `speedDiff`
     
-    - Then, it calculates the `speedDiff` is based off the target speed subtracted by the current speed. 
+    - The `speedDiff` is based off the target speed subtracted by the current speed. 
 
 3. `accelRate`
 
-    - The `accelRate` is next determines whether to use the acceleration or deceleration rate, based off of whether or not the targetSpeed is 0 or not.
+    - The `accelRate` determines whether to use the acceleration or deceleration rate based off of whether or not the targetSpeed is 0.
         - If it is 0, it decelerates.
         - Otherwise, it accelerates.
     - Note: .01 is used instead of 0 to account for floating-point errors. 
@@ -60,7 +60,7 @@ $$
 F = |F| \cdot \text{direction}
 $$
 
-- Since we want the character to smoothly accelerate, we square the value by `velPower`. This should scale between 0-1.
+- Since we want the character to accelerate smoothly, we square the value by `velPower`. This should scale between 0-1.
  
 - The formula for amount of time required to accelerate to full speed is: 
 
