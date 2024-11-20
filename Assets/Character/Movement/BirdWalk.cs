@@ -16,10 +16,10 @@ public class BirdWalk : BirdCore
     {
         float targetSpeed = direction * moveSpeed;
         float speedDiff = targetSpeed - rb.linearVelocity.x;
-
         float accelRate = (Mathf.Abs(targetSpeed) > .01) ? accelAmount : decelAmount;
-        float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
 
-        rb.AddForce(movement * Vector2.right);
+        float forceApplied = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
+
+        rb.AddForce(forceApplied * Vector2.right);
     }
 }
