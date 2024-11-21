@@ -23,4 +23,6 @@ X. add character facing direction script
 
 X. use direction char is facing instead of current input 
 
-- organize jump vars so it's cleaner to look at in inspector
+X. organize jump vars in birdJump file 
+
+- dash

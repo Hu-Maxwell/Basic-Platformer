@@ -3,46 +3,46 @@ using System.Collections; // allows for IEnumerator
 
 public class BirdJump : BirdCore
 {
-    #region vars
-    // bools
-    public bool isGrounded = false;
-    public bool isJumping = false;
-    public bool hasDoubleJumped = false;
-    public bool isTouchingWall = false;
-
-    // timers
-    public float timeSinceJump;
-    public float timeSinceWallJump;
-    public float timeSinceOffGround; 
-
-    // first jump
+    #region forces
     public float jumpForce = 15;
-
-    // double jump
     public float doubleJumpForce = 15;
-
-    // wall jump
     public float wallJumpForceX;
     public float wallJumpForceY;
-    public bool disableWalk = false;
-    public float disableWalkTime = 0.15f;
-
-    // down force
     public float jumpDownVel = -2.5f;
+    #endregion
 
-    // buffers
-    [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f; // replace this with an equation later
-    public float coyoteTime = 0.1f;
+    #region bools
+    [HideInInspector] public bool isGrounded = false;
+    [HideInInspector] public bool isJumping = false;
+    [HideInInspector] public bool hasDoubleJumped = false;
+    [HideInInspector] public bool isTouchingWall = false;
+    #endregion
+
+    #region timers
+    [HideInInspector] public float timeSinceJump;
+    [HideInInspector] public float timeSinceWallJump;
+    [HideInInspector] public float timeSinceOffGround;
+    #endregion
+
+    #region buffers
+    [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f;
+    [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
     [HideInInspector] public float normalJumpBuffer = 0.2f;
-
-    // collisions
-    [HideInInspector] public LayerMask levelLayer;
-    [HideInInspector] public float rayLenX = .525f;
-    [HideInInspector] public float rayLenY = 1.01f;
-    public float ignoreGroundCheckTime = 0.05f;
-
     #endregion
+
+    #region wall jump timer
+    [HideInInspector] public bool disableWalk = false;
+    [HideInInspector] public float disableWalkTime = 0.15f;
+    #endregion
+
+    #region collisions
+    [HideInInspector] public LayerMask levelLayer;
+    [HideInInspector] public float rayLenX = 0.525f;
+    [HideInInspector] public float rayLenY = 1.01f;
+    [HideInInspector] public float ignoreGroundCheckTime = 0.05f; 
+    #endregion
+
 
     void Start()
     {

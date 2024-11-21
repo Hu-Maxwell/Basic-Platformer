@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class BirdCore : MonoBehaviour
 {
-    public Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
 
-    public BirdWalk birdWalk;
-    public BirdJump birdJump;
-    public BirdDash birdDash;
-    public BirdDirection birdDirection; 
+    [HideInInspector] public BirdWalk birdWalk;
+    [HideInInspector] public BirdJump birdJump;
+    [HideInInspector] public BirdDash birdDash;
+    [HideInInspector] public BirdDirection birdDirection; 
 
     void Awake()
     {
