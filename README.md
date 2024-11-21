@@ -27,7 +27,7 @@ public void Walk(float direction)
 
     float forceApplied = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
 
-    rb.AddForce(movement * Vector2.right);
+    rb.AddForce(forceApplied * Vector2.right);
 }
 ```
 
