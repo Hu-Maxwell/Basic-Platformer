@@ -9,7 +9,13 @@ public class BirdWalk : BirdCore
 
     void FixedUpdate()
     {
-        birdWalk.Walk(Input.GetAxisRaw("Horizontal"));
+        // if no outside force, walk
+        if (birdJump.disableWalk)
+        {
+            return;
+        }
+
+        Walk(Input.GetAxisRaw("Horizontal")); 
     }
 
     public void Walk(float direction)

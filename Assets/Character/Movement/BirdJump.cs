@@ -12,7 +12,6 @@ public class BirdJump : BirdCore
 
     // timers
     public float timeSinceJump;
-    // public float timeSinceDoubleJump
     public float timeSinceWallJump;
     public float timeSinceOffGround; 
 
@@ -25,6 +24,8 @@ public class BirdJump : BirdCore
     // wall jump
     public float wallJumpForceX;
     public float wallJumpForceY;
+    public bool disableWalk = false;
+    public float disableWalkTime = 0.15f;
 
     // down force
     public float jumpDownVel = -2.5f;
@@ -75,9 +76,14 @@ public class BirdJump : BirdCore
                 StartCoroutine(BufferNormalJump());
             }
 
+            // wall jump takes priority over double jump
             if ((!isJumping && isGrounded) || (timeSinceOffGround < coyoteTime))
             {
                 NormalJump();
+            }
+            else if (!isGrounded && isTouchingWall)
+            {
+                WallJump();
             }
             else if (!isGrounded && !hasDoubleJumped && timeSinceJump > .05)
             {
@@ -94,8 +100,6 @@ public class BirdJump : BirdCore
 
     public void NormalJump()
     {
-        Debug.Log("jump");
-
         rb.linearVelocityY = 0;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
@@ -110,6 +114,19 @@ public class BirdJump : BirdCore
         rb.linearVelocityY = 0;
         rb.AddForce(Vector2.up * doubleJumpForce, ForceMode2D.Impulse);
         hasDoubleJumped = true;
+    }
+
+    public void WallJump()
+    {
+        // Debug.Log("wall jump");
+
+        rb.linearVelocityY = 0;
+        rb.AddForce(Vector2.up * wallJumpForceY, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.right * wallJumpForceX * -birdDirection.lookingDirectionX, ForceMode2D.Impulse); 
+
+        timeSinceWallJump = 0;
+
+        StartCoroutine(DisableWalkFromWallJump());
     }
 
     public IEnumerator BufferNormalJump()
@@ -129,21 +146,12 @@ public class BirdJump : BirdCore
         }
     }
 
-    /*
-    public IEnumerator WallJump()
+    public IEnumerator DisableWalkFromWallJump()
     {
-        yield return new WaitForSeconds(0.05f);
-
-        if (Input.GetKeyDown(KeyCode.Space) && isTouchingWall)
-        {
-            timeSinceWallJump = 0;
-            Debug.Log("wall jump");
-            rb.linearVelocityY = 0;
-            rb.AddForce(Vector2.up * wallJumpForceY, ForceMode2D.Impulse);
-            rb.AddForce(Vector2.right * wallJumpForceX * -lookingDirection.x, ForceMode2D.Impulse);
-        }
+        disableWalk = true;
+        yield return new WaitForSeconds(disableWalkTime);
+        disableWalk = false; 
     }
-    */
 
     public void ExertDownForce()
     {

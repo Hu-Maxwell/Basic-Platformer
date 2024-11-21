@@ -4,20 +4,20 @@ public class BirdCore : MonoBehaviour
 {
     public Rigidbody2D rb;
 
-    [HideInInspector] public BirdWalk birdWalk;
-    [HideInInspector] public BirdJump birdJump;
-    [HideInInspector] public BirdDash birdDash;
+    public BirdWalk birdWalk;
+    public BirdJump birdJump;
+    public BirdDash birdDash;
+    public BirdDirection birdDirection; 
 
-    void Start()
+    void Awake()
     {
         birdWalk = GetComponent<BirdWalk>();
         birdJump = GetComponent<BirdJump>();
         birdDash = GetComponent<BirdDash>();
-    }
+        birdDirection = GetComponent<BirdDirection>();
 
-    void Awake()
-    {
         rb = GetComponent<Rigidbody2D>();
+
     }
 
 }

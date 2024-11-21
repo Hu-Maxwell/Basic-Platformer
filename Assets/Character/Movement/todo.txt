@@ -12,5 +12,15 @@ X. buffer for normal jump (distance)
 		- it isn't really scalable with slower fall speeds. if the user is falling really slow, the jump buffer might feel really delayed
 		- and lastly, the functionality of switching a double jump to a normal jump isn't really too useful. not many players will try to double jump last second
 
-- coyote time for normal jump
-- if too close to floor, don't double jump. instead just buffer normal jump
+X. coyote time for normal jump
+	- completed: seems pretty solid and a decent feature
+
+X. wallJump 
+	- force in opposite of wall x and +y 
+	- disables walk for a bit 
+
+X. add character facing direction script 
+
+X. use direction char is facing instead of current input 
+
+- organize jump vars so it's cleaner to look at in inspector
