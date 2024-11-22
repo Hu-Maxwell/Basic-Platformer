@@ -29,6 +29,9 @@ public class BirdJump : BirdCore
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
     [HideInInspector] public float normalJumpBuffer = 0.2f;
+    [HideInInspector] public float timeToThreeFourthUp = 0.45f; // amount of time it takes to reach 3/4ths of apex of the jump. change this value later so it is automatically calculated
+    [HideInInspector] public float timeToThreeFourthDown = 0.6f;
+    [HideInInspector] float originalGravityScale; 
     #endregion
 
     #region wall jump timer
@@ -47,6 +50,7 @@ public class BirdJump : BirdCore
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
+        originalGravityScale = rb.gravityScale;
     }
 
     void Update()
@@ -62,6 +66,8 @@ public class BirdJump : BirdCore
 
         CheckFloorCollision();
         CheckWallCollision();
+
+        CheckForSlowDownOnApex();
 
         ManageJumpInputs();
     }
@@ -92,7 +98,7 @@ public class BirdJump : BirdCore
         }
 
         // if space let go, down force
-        if (Input.GetKeyUp(KeyCode.Space)) // && !hasDoubleJumped && rb.linearVelocityY > 0 && timeSinceJump < timeToThreeFourthsJumpHeight
+        if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocityY > 0  && timeSinceJump < timeToThreeFourthUp) 
         {
             ExertDownForce();
         }
@@ -129,6 +135,24 @@ public class BirdJump : BirdCore
         StartCoroutine(DisableWalkFromWallJump());
     }
 
+    public void ExertDownForce()
+    {
+        // Debug.Log("down force");
+        rb.linearVelocityY = jumpDownVel;
+    }
+
+    public void CheckForSlowDownOnApex()
+    {
+        if (timeSinceJump > timeToThreeFourthUp && timeSinceJump < timeToThreeFourthDown)
+        {
+            rb.gravityScale = originalGravityScale * 0.7f;
+        }
+        else
+        {
+            rb.gravityScale = originalGravityScale; 
+        }
+    }
+
     public IEnumerator BufferNormalJump()
     {
         float elapsedTime = 0;
@@ -151,12 +175,6 @@ public class BirdJump : BirdCore
         disableWalk = true;
         yield return new WaitForSeconds(disableWalkTime);
         disableWalk = false; 
-    }
-
-    public void ExertDownForce()
-    {
-        // Debug.Log("down force");
-        rb.linearVelocityY = jumpDownVel;
     }
 
     public void CheckFloorCollision()

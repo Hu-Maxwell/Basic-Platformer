@@ -25,4 +25,6 @@ X. use direction char is facing instead of current input
 
 X. organize jump vars in birdJump file 
 
-- dash
+X. at 3/4th of jump: 
+	- disable downward force
+	- player gravity decreases by a bit 
