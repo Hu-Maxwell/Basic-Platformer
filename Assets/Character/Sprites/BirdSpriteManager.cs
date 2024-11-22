@@ -3,6 +3,7 @@ using UnityEngine;
 public class BirdSpriteManager : BirdCore
 {
     public SpriteRenderer spriteRenderer;
+    public TrailRenderer trailRenderer;
 
     public Sprite baseSprite;
     public Sprite walkingSprite;
@@ -12,6 +13,8 @@ public class BirdSpriteManager : BirdCore
         // since the sprite manager script is not attached to the bird game object, it can't access the same stuff from birdCore
         GameObject birdGameObject = GameObject.Find("bird");
         birdDirection = birdGameObject.GetComponent<BirdDirection>();
+        birdDash = birdGameObject.GetComponent<BirdDash>();
+
         rb = birdGameObject.GetComponent<Rigidbody2D>(); 
 
         spriteRenderer.sprite = baseSprite;
@@ -21,13 +24,9 @@ public class BirdSpriteManager : BirdCore
     {
         UpdateBirdSpriteDirection();
 
-        if (Mathf.Abs(rb.linearVelocityX) > 0.2f)
-        {
-            spriteRenderer.sprite = walkingSprite;
-        } else
-        {
-            spriteRenderer.sprite = baseSprite;
-        }
+        UpdateBirdSpriteWalK();
+
+        TrailManager();
     }
 
     public void UpdateBirdSpriteDirection()
@@ -39,6 +38,29 @@ public class BirdSpriteManager : BirdCore
         if (birdDirection.lookingDirectionX == 1)
         {
             spriteRenderer.flipX = true;
+        }
+    }
+
+    public void UpdateBirdSpriteWalK()
+    {
+        if (Mathf.Abs(rb.linearVelocityX) > 0.2f)
+        {
+            spriteRenderer.sprite = walkingSprite;
+        }
+        else
+        {
+            spriteRenderer.sprite = baseSprite;
+        }
+    }
+
+    public void TrailManager()
+    {
+        if(birdDash.isDashing)
+        {
+            trailRenderer.emitting = true;
+        } else
+        {
+            trailRenderer.emitting = false;
         }
     }
 }

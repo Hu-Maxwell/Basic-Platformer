@@ -26,5 +26,27 @@ X. use direction char is facing instead of current input
 X. organize jump vars in birdJump file 
 
 X. at 3/4th of jump: 
-	- disable downward force
-	- player gravity decreases by a bit 
+	X. disable downward force
+	X. player gravity decreases by a bit 
+
+X. add controllable jump height for double and wall jump as well 
+	- add 3/4ths height for all of them
+		- this requires you to know the last jump input 
+		- takes the last jump input, and then calculates amount of time it takes to reach 3/4ths 
+		- if 3/4ths is reached, then disable downward force
+
+X. dash
+	X. possible glitch if the character is not moving and facing the same direction? may move backwards after dash ended.
+	- disable jump input when dashing
+	- if hits wall, make dash timer a little shorter
+
+- add effects 
+	X. dash emits a trail
+	- double jump produces an effect
+
+- direction bug when the character taps one direction while moving another
+	- can prolly (?) be fixed by polling for key held down instead of key press
+
+
+cool thingies:
+	- if dash doesn't disable any input, jumping while dashing can be pretty fun

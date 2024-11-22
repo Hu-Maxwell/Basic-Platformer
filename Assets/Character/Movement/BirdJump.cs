@@ -16,6 +16,7 @@ public class BirdJump : BirdCore
     [HideInInspector] public bool isJumping = false;
     [HideInInspector] public bool hasDoubleJumped = false;
     [HideInInspector] public bool isTouchingWall = false;
+    public bool canApplyDownForce = true;
     #endregion
 
     #region timers
@@ -46,7 +47,6 @@ public class BirdJump : BirdCore
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f; 
     #endregion
 
-
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
@@ -68,6 +68,7 @@ public class BirdJump : BirdCore
         CheckWallCollision();
 
         CheckForSlowDownOnApex();
+        CanDownForceManager();
 
         ManageJumpInputs();
     }
@@ -98,7 +99,7 @@ public class BirdJump : BirdCore
         }
 
         // if space let go, down force
-        if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocityY > 0  && timeSinceJump < timeToThreeFourthUp) 
+        if (Input.GetKeyUp(KeyCode.Space) && canApplyDownForce) 
         {
             ExertDownForce();
         }
@@ -110,6 +111,7 @@ public class BirdJump : BirdCore
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
         isJumping = true;
+        canApplyDownForce = true;
         timeSinceJump = 0;
     }
 
@@ -119,7 +121,9 @@ public class BirdJump : BirdCore
 
         rb.linearVelocityY = 0;
         rb.AddForce(Vector2.up * doubleJumpForce, ForceMode2D.Impulse);
+
         hasDoubleJumped = true;
+        canApplyDownForce = true;
     }
 
     public void WallJump()
@@ -131,6 +135,8 @@ public class BirdJump : BirdCore
         rb.AddForce(Vector2.right * wallJumpForceX * -birdDirection.lookingDirectionX, ForceMode2D.Impulse); 
 
         timeSinceWallJump = 0;
+        hasDoubleJumped = false; 
+        canApplyDownForce = true; 
 
         StartCoroutine(DisableWalkFromWallJump());
     }
@@ -139,11 +145,31 @@ public class BirdJump : BirdCore
     {
         // Debug.Log("down force");
         rb.linearVelocityY = jumpDownVel;
+        canApplyDownForce = false;
+    }
+
+    public void CanDownForceManager()
+    {
+        if(rb.linearVelocityY < 0)
+        {
+            canApplyDownForce = false;
+            return;
+        }
+
+        // take last jump
+        // take last jump's vel
+        // calculate time to reach 3/4s 
+        // once it reaches 3/4s then disable down force
     }
 
     public void CheckForSlowDownOnApex()
     {
-        if (timeSinceJump > timeToThreeFourthUp && timeSinceJump < timeToThreeFourthDown)
+        if (birdDash.isDashing)
+        {
+            return;
+        }
+
+        if (timeSinceJump > timeToThreeFourthUp && timeSinceJump < timeToThreeFourthDown) // timeSinceJump < timeToThreeFourthDown
         {
             rb.gravityScale = originalGravityScale * 0.7f;
         }
@@ -172,9 +198,9 @@ public class BirdJump : BirdCore
 
     public IEnumerator DisableWalkFromWallJump()
     {
-        disableWalk = true;
+        birdWalk.disableWalk = true;
         yield return new WaitForSeconds(disableWalkTime);
-        disableWalk = false; 
+        birdWalk.disableWalk = false; 
     }
 
     public void CheckFloorCollision()

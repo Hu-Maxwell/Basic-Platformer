@@ -6,11 +6,12 @@ public class BirdWalk : BirdCore
     public float accelAmount = 10;
     public float decelAmount = 3;
     public float velPower = 0.9f;
+    public bool disableWalk = false; 
 
     void FixedUpdate()
     {
         // if no outside force, walk
-        if (birdJump.disableWalk)
+        if (disableWalk)
         {
             return;
         }

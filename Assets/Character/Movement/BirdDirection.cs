@@ -12,6 +12,16 @@ public class BirdDirection : BirdCore
 
     public void UpdateDirection()
     {
-        lookingDirectionX = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            lookingDirectionX = -1;
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            lookingDirectionX = 1; 
+        }
+        
+        // not using this because it has smoothing - also, it gets set to 0.
+        // lookingDirectionX = Input.GetAxisRaw("Horizontal");
     }
 }
