@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class BirdWalk : BirdCore
 {
+    #region vars
+    [HideInInspector] public bool disableWalk = false;
+
     public float moveSpeed = 5;
     public float accelAmount = 10;
     public float decelAmount = 3;
     public float velPower = 0.9f;
-    public bool disableWalk = false; 
+    #endregion
 
     void FixedUpdate()
     {
@@ -16,7 +19,16 @@ public class BirdWalk : BirdCore
             return;
         }
 
-        Walk(Input.GetAxisRaw("Horizontal")); 
+        if (!birdDash.isDashing)
+        {
+            InputManager();
+        }
+    }
+    
+    public void InputManager()
+    {
+        float direction = Input.GetAxisRaw("Horizontal");
+        Walk(direction);
     }
 
     public void Walk(float direction)

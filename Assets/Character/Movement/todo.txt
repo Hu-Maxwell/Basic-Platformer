@@ -40,13 +40,20 @@ X. dash
 	- disable jump input when dashing
 	- if hits wall, make dash timer a little shorter
 
+X. organize vars
+	X. normal -> first
+	X. double -> second
+
 - add effects 
 	X. dash emits a trail
 	- double jump produces an effect
 
-- direction bug when the character taps one direction while moving another
-	- can prolly (?) be fixed by polling for key held down instead of key press
+X. direction bug when the character taps one direction while moving another
+	X. can prolly (?) be fixed by polling for key held down instead of key press (this was the fix)
 
+X. disable any user input during dash
 
-cool thingies:
+X. separate input manager and actual movement into two functions
+
+notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun

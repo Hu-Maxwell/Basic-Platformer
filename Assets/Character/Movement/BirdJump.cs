@@ -1,27 +1,39 @@
+using System.Collections.Generic; // for List
 using UnityEngine;
 using System.Collections; // allows for IEnumerator
 
+[System.Serializable]
+public class Jump
+{
+    public string name;
+    public Vector2 force;
+    public float timer;
+    public bool hasJumped;
+    public float threeFourthsTimeUp;
+    public float threeFourthsTimeDown;
+}
+
 public class BirdJump : BirdCore
 {
+    public Jump first;
+    public Jump second;
+    public Jump wall;
+
+    List<Jump> jumps;
+
+    [HideInInspector] public Jump lastJump;
+
     #region forces
-    public float jumpForce = 15;
-    public float doubleJumpForce = 15;
-    public float wallJumpForceX;
-    public float wallJumpForceY;
     public float jumpDownVel = -2.5f;
     #endregion
 
     #region bools
     [HideInInspector] public bool isGrounded = false;
-    [HideInInspector] public bool isJumping = false;
-    [HideInInspector] public bool hasDoubleJumped = false;
     [HideInInspector] public bool isTouchingWall = false;
-    public bool canApplyDownForce = true;
+    [HideInInspector] public bool canApplyDownForce = true;
     #endregion
 
     #region timers
-    [HideInInspector] public float timeSinceJump;
-    [HideInInspector] public float timeSinceWallJump;
     [HideInInspector] public float timeSinceOffGround;
     #endregion
 
@@ -29,9 +41,7 @@ public class BirdJump : BirdCore
     [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f;
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
-    [HideInInspector] public float normalJumpBuffer = 0.2f;
-    [HideInInspector] public float timeToThreeFourthUp = 0.45f; // amount of time it takes to reach 3/4ths of apex of the jump. change this value later so it is automatically calculated
-    [HideInInspector] public float timeToThreeFourthDown = 0.6f;
+    [HideInInspector] public float firstJumpBuffer = 0.2f;
     [HideInInspector] float originalGravityScale; 
     #endregion
 
@@ -46,55 +56,79 @@ public class BirdJump : BirdCore
     [HideInInspector] public float rayLenY = 1.01f;
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f; 
     #endregion
+    
+    void InitializeVariables()
+    {
+        first.name = "first";
+        first.force = new Vector2(0, 15);
+        first.timer = 0;
+        first.hasJumped = false;
+        first.threeFourthsTimeUp = 0.45f;
+        first.threeFourthsTimeDown = 0.60f;
+
+        second.name = "second";
+        second.force = new Vector2(0, 15);
+        second.timer = 0;
+        second.hasJumped = false;
+        second.threeFourthsTimeUp = 0.45f;
+        second.threeFourthsTimeDown = 0.60f;
+
+        wall.name = "wall";
+        wall.force = new Vector2(5, 15);
+        wall.timer = 0;
+        wall.hasJumped = false;
+        wall.threeFourthsTimeUp = 0.45f;
+        wall.threeFourthsTimeDown = 0.60f;
+
+        jumps = new List<Jump> { first, second, wall };
+    }
 
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
         originalGravityScale = rb.gravityScale;
+        InitializeVariables(); 
     }
 
     void Update()
     {
-        timeSinceJump += Time.deltaTime;
-        timeSinceWallJump += Time.deltaTime;
-        timeSinceOffGround += Time.deltaTime;
-        
-        if(isGrounded)
-        {
-            timeSinceOffGround = 0; 
-        }
+        ManageTimers();
+        InputManager();
 
         CheckFloorCollision();
         CheckWallCollision();
 
         CheckForSlowDownOnApex();
         CanDownForceManager();
-
-        ManageJumpInputs();
     }
 
-    public void ManageJumpInputs()
+    public void InputManager()
     {
+        if (birdDash.isDashing)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // jump buffer
-            if (isJumping && hasDoubleJumped)
+            if (first.hasJumped && second.hasJumped)
             {
-                StartCoroutine(BufferNormalJump());
+                StartCoroutine(BufferFirstJump());
             }
 
-            // wall jump takes priority over double jump
-            if ((!isJumping && isGrounded) || (timeSinceOffGround < coyoteTime))
+            // wall jump takes priority over second jump
+            if ((!first.hasJumped && isGrounded) || (timeSinceOffGround < coyoteTime))
             {
-                NormalJump();
+                FirstJump();
             }
             else if (!isGrounded && isTouchingWall)
             {
                 WallJump();
             }
-            else if (!isGrounded && !hasDoubleJumped && timeSinceJump > .05)
+            else if (!isGrounded && !second.hasJumped && first.timer > .05)
             {
-                DoubleJump();
+                SecondJump();
             }
         }
 
@@ -105,45 +139,50 @@ public class BirdJump : BirdCore
         }
     }
 
-    public void NormalJump()
+    // although the same as secondJump, i am keeping these separate in case of needing to make first jump unique
+    public void FirstJump()
     {
         rb.linearVelocityY = 0;
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        rb.AddForce(first.force, ForceMode2D.Impulse);
+        
+        first.hasJumped = true;
+        first.timer = 0; 
 
-        isJumping = true;
         canApplyDownForce = true;
-        timeSinceJump = 0;
+
+        lastJump = first;
     }
 
-    public void DoubleJump()
+    public void SecondJump()
     {
-        // Debug.Log("double jump");
-
         rb.linearVelocityY = 0;
-        rb.AddForce(Vector2.up * doubleJumpForce, ForceMode2D.Impulse);
+        rb.AddForce(second.force, ForceMode2D.Impulse);
 
-        hasDoubleJumped = true;
+        second.hasJumped = true;
+        second.timer = 0;
+
         canApplyDownForce = true;
+
+        lastJump = second;
     }
 
     public void WallJump()
     {
-        // Debug.Log("wall jump");
-
         rb.linearVelocityY = 0;
-        rb.AddForce(Vector2.up * wallJumpForceY, ForceMode2D.Impulse);
-        rb.AddForce(Vector2.right * wallJumpForceX * -birdDirection.lookingDirectionX, ForceMode2D.Impulse); 
+        rb.AddForce(Vector2.up * wall.force.y, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.right * wall.force.x * -birdDirection.lookingDirectionX, ForceMode2D.Impulse);
 
-        timeSinceWallJump = 0;
-        hasDoubleJumped = false; 
-        canApplyDownForce = true; 
+        wall.timer = 0;
+        second.hasJumped = false;
+
+        canApplyDownForce = true;
+        lastJump = wall;
 
         StartCoroutine(DisableWalkFromWallJump());
     }
 
     public void ExertDownForce()
     {
-        // Debug.Log("down force");
         rb.linearVelocityY = jumpDownVel;
         canApplyDownForce = false;
     }
@@ -155,11 +194,16 @@ public class BirdJump : BirdCore
             canApplyDownForce = false;
             return;
         }
+        
+        if (lastJump == null)
+        {
+            return; 
+        }
 
-        // take last jump
-        // take last jump's vel
-        // calculate time to reach 3/4s 
-        // once it reaches 3/4s then disable down force
+        if (lastJump.timer > lastJump.threeFourthsTimeUp)
+        {
+            canApplyDownForce = false; 
+        }
     }
 
     public void CheckForSlowDownOnApex()
@@ -169,7 +213,12 @@ public class BirdJump : BirdCore
             return;
         }
 
-        if (timeSinceJump > timeToThreeFourthUp && timeSinceJump < timeToThreeFourthDown) // timeSinceJump < timeToThreeFourthDown
+        if (lastJump == null)
+        {
+            return;
+        }
+
+        if (lastJump.timer > lastJump.threeFourthsTimeUp && lastJump.timer < lastJump.threeFourthsTimeDown) 
         {
             rb.gravityScale = originalGravityScale * 0.7f;
         }
@@ -179,15 +228,15 @@ public class BirdJump : BirdCore
         }
     }
 
-    public IEnumerator BufferNormalJump()
+    public IEnumerator BufferFirstJump()
     {
         float elapsedTime = 0;
 
-        while (elapsedTime < normalJumpBuffer)
+        while (elapsedTime < firstJumpBuffer)
         {
             if(isGrounded)
             {
-                NormalJump();
+                FirstJump();
                 yield break;
             }
 
@@ -205,7 +254,7 @@ public class BirdJump : BirdCore
 
     public void CheckFloorCollision()
     {
-        if(timeSinceJump < ignoreGroundCheckTime)
+        if(first.timer < ignoreGroundCheckTime)
         {
             return; 
         }
@@ -216,8 +265,10 @@ public class BirdJump : BirdCore
         if (downRay)
         {
             isGrounded = true;
-            hasDoubleJumped = false;
-            isJumping = false;
+            lastJump = null;
+
+            first.hasJumped = false;
+            second.hasJumped = false;
         }
         else
         {
@@ -240,6 +291,20 @@ public class BirdJump : BirdCore
         else
         {
             isTouchingWall = false;
+        }
+    }
+
+    void ManageTimers()
+    {
+        first.timer += Time.deltaTime;
+        second.timer += Time.deltaTime;
+        wall.timer += Time.deltaTime;
+
+        timeSinceOffGround += Time.deltaTime;
+
+        if (isGrounded)
+        {
+            timeSinceOffGround = 0;
         }
     }
 }

@@ -4,10 +4,10 @@ using System.Collections; // allows for IEnumerator
 public class BirdDash : BirdCore
 {
     #region vars
-    public bool isDashing;
-    public float timeSinceDashEnd;
-    public bool canDash = true;
-    public bool firstDash = true; 
+    [HideInInspector] public bool isDashing;
+    [HideInInspector] public float timeSinceDashEnd;
+    [HideInInspector] public bool canDash = true;
+    [HideInInspector] public bool firstDash = true; 
 
     public float dashMultiplier = 3;
     public float dashTime = 0.5f;
@@ -17,8 +17,13 @@ public class BirdDash : BirdCore
     public void Update()
     {
         timeSinceDashEnd += Time.deltaTime;
-        CanDashManager(); 
+        CanDashManager();
 
+        InputManager();
+    }
+
+    void InputManager()
+    {
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
