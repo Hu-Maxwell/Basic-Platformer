@@ -17,7 +17,5 @@ public class BirdCore : MonoBehaviour
         birdDirection = GetComponent<BirdDirection>();
 
         rb = GetComponent<Rigidbody2D>();
-
     }
-
 }

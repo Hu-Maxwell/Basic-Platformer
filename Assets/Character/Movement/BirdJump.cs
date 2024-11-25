@@ -20,12 +20,11 @@ public class BirdJump : BirdCore
     public Jump wall;
 
     List<Jump> jumps;
-
     [HideInInspector] public Jump lastJump;
 
-    #region forces
     public float jumpDownVel = -2.5f;
-    #endregion
+
+    [HideInInspector] public float timeSinceOffGround;
 
     #region bools
     [HideInInspector] public bool isGrounded = false;
@@ -33,110 +32,30 @@ public class BirdJump : BirdCore
     [HideInInspector] public bool canApplyDownForce = true;
     #endregion
 
-    #region timers
-    [HideInInspector] public float timeSinceOffGround;
-    #endregion
-
     #region buffers
     [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f;
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
     [HideInInspector] public float firstJumpBuffer = 0.2f;
-    [HideInInspector] float originalGravityScale; 
+    [HideInInspector] public float originalGravityScale; 
     #endregion
 
-    #region wall jump timer
+    #region wall jump manager
     [HideInInspector] public bool disableWalk = false;
     [HideInInspector] public float disableWalkTime = 0.15f;
     #endregion
-
-    #region collisions
-    [HideInInspector] public LayerMask levelLayer;
-    [HideInInspector] public float rayLenX = 0.525f;
-    [HideInInspector] public float rayLenY = 1.01f;
-    [HideInInspector] public float ignoreGroundCheckTime = 0.05f; 
-    #endregion
     
-    void InitializeVariables()
-    {
-        first.name = "first";
-        first.force = new Vector2(0, 15);
-        first.timer = 0;
-        first.hasJumped = false;
-        first.threeFourthsTimeUp = 0.45f;
-        first.threeFourthsTimeDown = 0.60f;
-
-        second.name = "second";
-        second.force = new Vector2(0, 15);
-        second.timer = 0;
-        second.hasJumped = false;
-        second.threeFourthsTimeUp = 0.45f;
-        second.threeFourthsTimeDown = 0.60f;
-
-        wall.name = "wall";
-        wall.force = new Vector2(5, 15);
-        wall.timer = 0;
-        wall.hasJumped = false;
-        wall.threeFourthsTimeUp = 0.45f;
-        wall.threeFourthsTimeDown = 0.60f;
-
-        jumps = new List<Jump> { first, second, wall };
-    }
-
     void Start()
     {
-        levelLayer = LayerMask.GetMask("level");
-        originalGravityScale = rb.gravityScale;
         InitializeVariables(); 
     }
 
     void Update()
     {
         ManageTimers();
-        InputManager();
-
-        CheckFloorCollision();
-        CheckWallCollision();
 
         CheckForSlowDownOnApex();
         CanDownForceManager();
-    }
-
-    public void InputManager()
-    {
-        if (birdDash.isDashing)
-        {
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // jump buffer
-            if (first.hasJumped && second.hasJumped)
-            {
-                StartCoroutine(BufferFirstJump());
-            }
-
-            // wall jump takes priority over second jump
-            if ((!first.hasJumped && isGrounded) || (timeSinceOffGround < coyoteTime))
-            {
-                FirstJump();
-            }
-            else if (!isGrounded && isTouchingWall)
-            {
-                WallJump();
-            }
-            else if (!isGrounded && !second.hasJumped && first.timer > .05)
-            {
-                SecondJump();
-            }
-        }
-
-        // if space let go, down force
-        if (Input.GetKeyUp(KeyCode.Space) && canApplyDownForce) 
-        {
-            ExertDownForce();
-        }
     }
 
     // although the same as secondJump, i am keeping these separate in case of needing to make first jump unique
@@ -218,6 +137,7 @@ public class BirdJump : BirdCore
             return;
         }
 
+        // change to variable, if it's between +2 and -2 vel
         if (lastJump.timer > lastJump.threeFourthsTimeUp && lastJump.timer < lastJump.threeFourthsTimeDown) 
         {
             rb.gravityScale = originalGravityScale * 0.7f;
@@ -252,48 +172,6 @@ public class BirdJump : BirdCore
         birdWalk.disableWalk = false; 
     }
 
-    public void CheckFloorCollision()
-    {
-        if(first.timer < ignoreGroundCheckTime)
-        {
-            return; 
-        }
-
-        RaycastHit2D downRay = Physics2D.Raycast(transform.position, Vector2.down, rayLenY, levelLayer);
-        Debug.DrawRay(transform.position, Vector2.down * rayLenY);
-
-        if (downRay)
-        {
-            isGrounded = true;
-            lastJump = null;
-
-            first.hasJumped = false;
-            second.hasJumped = false;
-        }
-        else
-        {
-            isGrounded = false;
-        }
-    }
-
-    void CheckWallCollision()
-    {
-        RaycastHit2D leftRay = Physics2D.Raycast(transform.position, Vector2.left, rayLenX, levelLayer);
-        RaycastHit2D rightRay = Physics2D.Raycast(transform.position, Vector2.right, rayLenX, levelLayer);
-
-        Debug.DrawRay(transform.position, Vector2.left * rayLenX);
-        Debug.DrawRay(transform.position, Vector2.right * rayLenX);
-
-        if (leftRay || rightRay)
-        {
-            isTouchingWall = true;
-        }
-        else
-        {
-            isTouchingWall = false;
-        }
-    }
-
     void ManageTimers()
     {
         first.timer += Time.deltaTime;
@@ -306,5 +184,32 @@ public class BirdJump : BirdCore
         {
             timeSinceOffGround = 0;
         }
+    }
+
+    void InitializeVariables()
+    {
+        first.name = "first";
+        first.force = new Vector2(0, 15);
+        first.timer = 0;
+        first.hasJumped = false;
+        first.threeFourthsTimeUp = 0.45f;
+        first.threeFourthsTimeDown = 0.60f;
+
+        second.name = "second";
+        second.force = new Vector2(0, 15);
+        second.timer = 0;
+        second.hasJumped = false;
+        second.threeFourthsTimeUp = 0.45f;
+        second.threeFourthsTimeDown = 0.60f;
+
+        wall.name = "wall";
+        wall.force = new Vector2(5, 15);
+        wall.timer = 0;
+        wall.hasJumped = false;
+        wall.threeFourthsTimeUp = 0.45f;
+        wall.threeFourthsTimeDown = 0.60f;
+
+        jumps = new List<Jump> { first, second, wall };
+        originalGravityScale = rb.gravityScale;
     }
 }

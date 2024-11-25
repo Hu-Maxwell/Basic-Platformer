@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 349463751}
   - component: {fileID: 349463750}
   - component: {fileID: 349463753}
+  - component: {fileID: 349463754}
+  - component: {fileID: 349463755}
   m_Layer: 0
   m_Name: bird
   m_TagString: Untagged
@@ -245,33 +247,46 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
-  jumpForce: 15
-  doubleJumpForce: 15
-  wallJumpForceX: 4
-  wallJumpForceY: 15
+  first:
+    name: 
+    force: {x: 0, y: 0}
+    timer: 0
+    hasJumped: 0
+    threeFourthsTimeUp: 0
+    threeFourthsTimeDown: 0
+  second:
+    name: 
+    force: {x: 0, y: 0}
+    timer: 0
+    hasJumped: 0
+    threeFourthsTimeUp: 0
+    threeFourthsTimeDown: 0
+  wall:
+    name: 
+    force: {x: 0, y: 0}
+    timer: 0
+    hasJumped: 0
+    threeFourthsTimeUp: 0
+    threeFourthsTimeDown: 0
+  lastJump:
+    name: 
+    force: {x: 0, y: 0}
+    timer: 0
+    hasJumped: 0
+    threeFourthsTimeUp: 0
+    threeFourthsTimeDown: 0
   jumpDownVel: -5
+  timeSinceOffGround: 0
   isGrounded: 0
-  isJumping: 0
-  hasDoubleJumped: 0
   isTouchingWall: 0
   canApplyDownForce: 1
-  timeSinceJump: 0
-  timeSinceWallJump: 0
-  timeSinceOffGround: 0
   timeToThreeFourthsJumpHeight: 0.5
   coyoteTime: 0.1
   wallJumpBufferX: 0
-  normalJumpBuffer: 0.2
-  timeToThreeFourthUp: 0.45
-  timeToThreeFourthDown: 0.6
+  firstJumpBuffer: 0.2
+  originalGravityScale: 0
   disableWalk: 0
   disableWalkTime: 0.1
-  levelLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  rayLenX: 0.525
-  rayLenY: 1.05
-  ignoreGroundCheckTime: 0.05
 --- !u!114 &349463752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,11 +304,11 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  disableWalk: 0
   moveSpeed: 5
   accelAmount: 10
   decelAmount: 3
   velPower: 0.9
-  disableWalk: 0
 --- !u!114 &349463753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +327,46 @@ MonoBehaviour:
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
   lookingDirectionX: 0
+--- !u!114 &349463754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349463745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68886358c59247d49bbfe61f01be6225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  birdWalk: {fileID: 0}
+  birdJump: {fileID: 0}
+  birdDash: {fileID: 0}
+  birdDirection: {fileID: 0}
+--- !u!114 &349463755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349463745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7a34ec41267a540b33ca926f67dec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  birdWalk: {fileID: 0}
+  birdJump: {fileID: 0}
+  birdDash: {fileID: 0}
+  birdDirection: {fileID: 0}
+  levelLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  rayLenX: 0.525
+  rayLenY: 1.01
+  ignoreGroundCheckTime: 0.05
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

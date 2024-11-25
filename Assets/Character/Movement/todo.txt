@@ -55,5 +55,15 @@ X. disable any user input during dash
 
 X. separate input manager and actual movement into two functions
 
+X. separate all of input and movement into different files
+
+X. separate collison into a new file
+
+- make it so that the bounciness function only is applied if downforce hasn't been applied yet or based off of velocity
+
+- buffer for jump during dash 
+
+- slow down sliding down wall when touching wall (friction or gravity?)
+
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun

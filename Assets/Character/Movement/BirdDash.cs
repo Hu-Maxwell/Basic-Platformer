@@ -18,16 +18,6 @@ public class BirdDash : BirdCore
     {
         timeSinceDashEnd += Time.deltaTime;
         CanDashManager();
-
-        InputManager();
-    }
-
-    void InputManager()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
-        {
-            StartCoroutine(Dash());
-        }
     }
 
     public IEnumerator Dash()
