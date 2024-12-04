@@ -125,6 +125,8 @@ public class BirdJump : BirdCore
         }
     }
 
+    // TODO: add bounciness based off of vel
+    // phys eq: vel @ 3/4 = vi / 2 
     public void CheckForSlowDownOnApex()
     {
         if (birdDash.isDashing)
