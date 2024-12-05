@@ -19,6 +19,6 @@ public class BirdWalk : BirdCore
 
         float forceApplied = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
 
-        rb.AddForce(forceApplied * Vector2.right);
+        rb.AddForce(new Vector2(forceApplied, 0));
     }
 }

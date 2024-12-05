@@ -59,7 +59,11 @@ X. separate all of input and movement into different files
 
 X. separate collison into a new file
 
+- make it so that bounciness function is based off of current accel and vel
+
 - make it so that the bounciness function only is applied if downforce hasn't been applied yet or based off of velocity
+
+- decrease 
 
 - buffer for jump during dash 
 

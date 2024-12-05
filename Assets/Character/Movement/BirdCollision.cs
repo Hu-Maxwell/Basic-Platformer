@@ -41,6 +41,8 @@ public class BirdCollision : BirdCore
         {
             birdJump.isGrounded = false;
         }
+
+
     }
 
     void CheckWallCollision()

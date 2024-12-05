@@ -1,6 +1,8 @@
 using System.Collections.Generic; // for List
 using UnityEngine;
-using System.Collections; // allows for IEnumerator
+using System.Collections;
+using Unity.VisualScripting;
+using System; // allows for IEnumerator
 
 [System.Serializable]
 public class Jump
@@ -11,6 +13,7 @@ public class Jump
     public bool hasJumped;
     public float threeFourthsTimeUp;
     public float threeFourthsTimeDown;
+    public float threeFourthsVelocity; 
 }
 
 public class BirdJump : BirdCore
@@ -27,7 +30,7 @@ public class BirdJump : BirdCore
     [HideInInspector] public float timeSinceOffGround;
 
     #region bools
-    [HideInInspector] public bool isGrounded = false;
+    public bool isGrounded = false;
     [HideInInspector] public bool isTouchingWall = false;
     [HideInInspector] public bool canApplyDownForce = true;
     #endregion
@@ -45,6 +48,8 @@ public class BirdJump : BirdCore
     [HideInInspector] public float disableWalkTime = 0.15f;
     #endregion
     
+
+    public float timeScale = 1; 
     void Start()
     {
         InitializeVariables(); 
@@ -52,7 +57,13 @@ public class BirdJump : BirdCore
 
     void Update()
     {
+        Time.timeScale = timeScale; 
         ManageTimers();
+
+        // check if this doesn't break anything. it shouldn't tho. if it doesn't remove CheckForSlowDownOnApex's isdashing check
+        // if (birdDash.isDashing) {
+        //     return; 
+        // }
 
         CheckForSlowDownOnApex();
         CanDownForceManager();
@@ -125,8 +136,6 @@ public class BirdJump : BirdCore
         }
     }
 
-    // TODO: add bounciness based off of vel
-    // phys eq: vel @ 3/4 = vi / 2 
     public void CheckForSlowDownOnApex()
     {
         if (birdDash.isDashing)
@@ -134,20 +143,42 @@ public class BirdJump : BirdCore
             return;
         }
 
-        if (lastJump == null)
+        if (lastJump == null || isGrounded || rb.linearVelocityY == 0)
         {
             return;
         }
 
-        // change to variable, if it's between +2 and -2 vel
-        if (lastJump.timer > lastJump.threeFourthsTimeUp && lastJump.timer < lastJump.threeFourthsTimeDown) 
-        {
+
+        // possible ways to implement: 
+        // timer: during a certain timeframe after the player's jump, slowdown  
+        // velocity: during a certain vel threshold, slowdown 
+            // calculated by vi / 2 to reach 3/4ths height 
+        // accel + vel: using current accel and vel to calculate the amount of TIME needed to reach the top. call this toApexTime 
+        // when toApexTime reaches a certain threshold, slowdown 
+        // this should work on both the way up and down by absolute val velocity
+
+        // toApexTime calculation: 
+        // initial vel = current vel
+        // final vel = 0 
+        // vi = vo + at
+        // vi = 0 + at
+        // t = vi / a 
+
+        float toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * rb.gravityScale);
+        toApexTime = Math.Abs(toApexTime); 
+
+        Debug.Log(toApexTime);
+
+        // TODO: make it a gradual slowdown rather than immediate
+        if (toApexTime < .2f) {
+            // slowdown
             rb.gravityScale = originalGravityScale * 0.7f;
         }
         else
         {
             rb.gravityScale = originalGravityScale; 
         }
+
     }
 
     public IEnumerator BufferFirstJump()
@@ -192,26 +223,28 @@ public class BirdJump : BirdCore
     {
         first.name = "first";
         first.force = new Vector2(0, 15);
-        first.timer = 0;
-        first.hasJumped = false;
         first.threeFourthsTimeUp = 0.45f;
         first.threeFourthsTimeDown = 0.60f;
+        first.threeFourthsVelocity = first.force.y / 2; // solved using phys, add to documentation later
 
         second.name = "second";
         second.force = new Vector2(0, 15);
-        second.timer = 0;
-        second.hasJumped = false;
         second.threeFourthsTimeUp = 0.45f;
         second.threeFourthsTimeDown = 0.60f;
 
         wall.name = "wall";
         wall.force = new Vector2(5, 15);
-        wall.timer = 0;
-        wall.hasJumped = false;
         wall.threeFourthsTimeUp = 0.45f;
         wall.threeFourthsTimeDown = 0.60f;
 
         jumps = new List<Jump> { first, second, wall };
+
+        foreach (var jump in jumps) {
+            jump.timer = 0;
+            jump.hasJumped = false; 
+            jump.threeFourthsVelocity = jump.force.y / 2;
+        }
+
         originalGravityScale = rb.gravityScale;
     }
 }
