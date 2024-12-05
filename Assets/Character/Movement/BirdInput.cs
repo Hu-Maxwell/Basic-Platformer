@@ -17,18 +17,13 @@ public class BirdInput : BirdCore
 
     public void InputManager()
     {
-        // if (birdDash.isDashing) 
-        // {
-        //     return;
-        // }
-
         #region jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
             HandleJumpInput();
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && birdJump.canApplyDownForce)
+        if (Input.GetKeyUp(KeyCode.Space) && birdJump.canApplyDownForce && !birdDash.isDashing) // change to condition method
         {
             birdJump.TryBufferDownForce();
         }
@@ -36,7 +31,7 @@ public class BirdInput : BirdCore
 
         // can dash while dashing
         #region dash
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !birdDash.isDashing)
         {
             HandleDashInput();
         }

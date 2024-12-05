@@ -41,7 +41,7 @@ public class BirdJump : BirdCore
     [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f;
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
-    [HideInInspector] public float firstJumpBuffer = 0.1f;
+    [HideInInspector] public float firstJumpBuffer = 0.03f;
     [HideInInspector] public float originalGravityScale; 
     #endregion
 
@@ -187,14 +187,11 @@ public class BirdJump : BirdCore
     public IEnumerator BufferAnyJump() 
     {
         float elapsedTime = 0;
-        Debug.Log("buffering dash");
 
         while (elapsedTime < firstJumpBuffer)
         {
-            Debug.Log("trying buffered dash jump");
             if (birdInput.TryPerformJump()) 
             {
-                Debug.Log("buffered dash jump");
                 yield break;
             }
 

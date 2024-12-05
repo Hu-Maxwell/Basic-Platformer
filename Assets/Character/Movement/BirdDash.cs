@@ -10,7 +10,7 @@ public class BirdDash : BirdCore
     [HideInInspector] public bool firstDash = true; 
 
     public float dashMultiplier = 3;
-    public float dashTime = 0.5f;
+    public float dashTime = .25f;
     float dashCooldown = 0.3f;
     #endregion
 
