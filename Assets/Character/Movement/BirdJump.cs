@@ -26,13 +26,12 @@ public class BirdJump : BirdCore
     List<Jump> jumps;
     [HideInInspector] public Jump curJump;
 
-    public float jumpDownVel = -2.0f;
-    public float toApexTime = 0; 
-
+    [HideInInspector] public float jumpDownVel = -2.0f;
+    [HideInInspector] public float toApexTime = 0; 
     [HideInInspector] public float timeSinceOffGround;
 
     #region bools
-    public bool isGrounded = false;
+    [HideInInspector] public bool isGrounded = false;
     [HideInInspector] public bool isTouchingWall = false;
     [HideInInspector] public bool canApplyDownForce = true;
     #endregion
@@ -115,6 +114,12 @@ public class BirdJump : BirdCore
 
     public void CalculateToApexTime() 
     {
+        if (curJump == null) 
+        {
+            toApexTime = 0; 
+            return;
+        }
+
         toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * 3); // 3 is a temp value because using rb.gravityscale wont work, grav scale is always changing
         toApexTime = Math.Abs(toApexTime); 
     }
@@ -204,7 +209,7 @@ public class BirdJump : BirdCore
     { 
         // while time since jump is < .1
         float curJumpTimer = curJump.timer; 
-        while (curJump.timer < 0.1f) 
+        while (curJump != null && curJump.timer < 0.1f) 
         {
             // if player jumps, cancel
             // checks if player's current jump changed at any point using timer
