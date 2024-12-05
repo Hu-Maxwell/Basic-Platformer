@@ -74,3 +74,9 @@ X. make it so that bounciness function is based off of current accel and vel
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
+
+notes:
+    - set composite to polygon, otherwise it's not perfectly flat 
+    - lock z axis for char
+    - add phys mat with 0 bounce 0 fric to both level and char so you can control it 
+    - collision: cont, sleeping mode: never sleep (doesn't really matter), interpolate: interpolate (extrapolate is okay but it's not really optimal cuz it guesses values). interpolate smooths out the movement and prevents it from being jittery
