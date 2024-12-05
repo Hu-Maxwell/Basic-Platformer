@@ -86,9 +86,13 @@ X. make it so that the downforce 3/4th height restriction follows the same logic
 X. buffer for jump during dash 
 
 - slow down sliding down wall when touching wall (friction or gravity?)
+    - can be done by simply reducing gravityscale when char is on wall
+    - this doesn't really account for friction upwards tho
 
-- change raycast to boxcast so isgrounded is true even if standing on edge
-- do same for wall but slightly less tall than the player so the player cant wall jump off of its hair
+    - or do it by applying an opposite force in y direction 
+
+X. change raycast to boxcast so isgrounded is true even if standing on edge
+X. do same for wall but slightly less tall than the player so the player cant wall jump off of its hair
 
 - make function names consistent
 
