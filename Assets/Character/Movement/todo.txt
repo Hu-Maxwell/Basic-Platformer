@@ -89,11 +89,31 @@ X. make it so that the downforce 3/4th height restriction follows the same logic
 
 - change raycast to boxcast so isgrounded is true even if standing on edge
 
+- make function names consistent
+
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
 
-notes:
+notes: 
     - set composite to polygon, otherwise it's not perfectly flat 
     - lock z axis for char
     - add phys mat with 0 bounce 0 fric to both level and char so you can control it 
     - collision: cont, sleeping mode: never sleep (doesn't really matter), interpolate: interpolate (extrapolate is okay but it's not really optimal cuz it guesses values). interpolate smooths out the movement and prevents it from being jittery
+
+
+possible ways to implement slowdownonapex: 
+    timer: during a certain timeframe after the player's jump, slowdown  
+
+    velocity: during a certain vel threshold, slowdown 
+        calculated by vi / 2 to reach 3/4ths height 
+
+    accel + vel: using current accel and vel to calculate the amount of TIME needed to reach the top. call this toApexTime 
+        when toApexTime reaches a certain threshold, slowdown 
+        this should work on both the way up and down by absolute val velocity
+
+        toApexTime calculation: 
+        initial vel = current vel
+        final vel = 0 
+        vi = vo + at
+        vi = 0 + at
+        t = vi / a 

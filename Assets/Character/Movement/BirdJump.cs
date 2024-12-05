@@ -1,8 +1,8 @@
-using System.Collections.Generic; // for List
+using System.Collections.Generic; 
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
-using System; // allows for IEnumerator
+using System; 
 
 [System.Serializable]
 public class Jump
@@ -59,11 +59,6 @@ public class BirdJump : BirdCore
     {
         Time.timeScale = timeScale; 
         ManageTimers();
-
-        // check if this doesn't break anything. it shouldn't tho. if it doesn't remove CheckForSlowDownOnApex's isdashing check
-        // if (birdDash.isDashing) {
-        //     return; 
-        // }
 
         ApexSlowDownManager();
         CanDownForceManager();
@@ -145,7 +140,7 @@ public class BirdJump : BirdCore
 
     public void ApexSlowDownManager()
     {
-        if (birdDash.isDashing) // || hasDownForced
+        if (birdDash.isDashing) 
         {
             return;
         }
@@ -156,20 +151,7 @@ public class BirdJump : BirdCore
             return;
         }
 
-        // possible ways to implement: 
-        // timer: during a certain timeframe after the player's jump, slowdown  
-        // velocity: during a certain vel threshold, slowdown 
-            // calculated by vi / 2 to reach 3/4ths height 
-        // accel + vel: using current accel and vel to calculate the amount of TIME needed to reach the top. call this toApexTime 
-        // when toApexTime reaches a certain threshold, slowdown 
-        // this should work on both the way up and down by absolute val velocity
 
-        // toApexTime calculation: 
-        // initial vel = current vel
-        // final vel = 0 
-        // vi = vo + at
-        // vi = 0 + at
-        // t = vi / a 
 
         float toApexTimeThreshold = 0.2f;
 
