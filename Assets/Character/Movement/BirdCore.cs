@@ -4,6 +4,7 @@ public class BirdCore : MonoBehaviour
 {
     [HideInInspector] public Rigidbody2D rb;
 
+    [HideInInspector] public BirdInput birdInput;
     [HideInInspector] public BirdWalk birdWalk;
     [HideInInspector] public BirdJump birdJump;
     [HideInInspector] public BirdDash birdDash;
@@ -11,6 +12,7 @@ public class BirdCore : MonoBehaviour
 
     void Awake()
     {
+        birdInput = GetComponent<BirdInput>(); 
         birdWalk = GetComponent<BirdWalk>();
         birdJump = GetComponent<BirdJump>();
         birdDash = GetComponent<BirdDash>();

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections; // allows for IEnumerator
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using Unity.VisualScripting;
 
 public class BirdInput : BirdCore
 {
@@ -16,10 +17,10 @@ public class BirdInput : BirdCore
 
     public void InputManager()
     {
-        if (birdDash.isDashing) 
-        {
-            return;
-        }
+        // if (birdDash.isDashing) 
+        // {
+        //     return;
+        // }
 
         #region jump
         if (Input.GetKeyDown(KeyCode.Space))
@@ -33,6 +34,7 @@ public class BirdInput : BirdCore
         }
         #endregion
 
+        // can dash while dashing
         #region dash
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -54,23 +56,50 @@ public class BirdInput : BirdCore
         birdWalk.Walk(direction);
     }
 
-    private void HandleJumpInput()
+    public void HandleJumpInput()
     {
-        if (ShouldBufferFirstJump())
+        if (TryPerformJump()) 
+        { 
+            return;
+        } 
+        else
         {
-            StartCoroutine(birdJump.BufferFirstJump());
+            HandleJumpBuffers(); 
         }
-        else if (CanPerformFirstJump())
+    }
+
+    public bool TryPerformJump() {
+        if (birdDash.isDashing) {
+            return false;
+        }
+
+        if (CanPerformFirstJump())
         {
             birdJump.FirstJump();
+            return true; 
         }
         else if (CanPerformWallJump())
         {
             birdJump.WallJump();
+            return true;
         }
         else if (CanPerformSecondJump())
         {
             birdJump.SecondJump();
+            return true;
+        }
+
+        return false; 
+    }
+
+    public void HandleJumpBuffers() {
+        if (birdDash.isDashing) 
+        {
+            StartCoroutine(birdJump.BufferAnyJump()); 
+        }
+        else if (ShouldBufferFirstJump()) 
+        {
+            StartCoroutine(birdJump.BufferFirstJump()); 
         }
     }
 
@@ -85,6 +114,7 @@ public class BirdInput : BirdCore
     #endregion
 
     #region condition methods
+
     private bool ShouldBufferFirstJump() => birdJump.first.hasJumped && birdJump.second.hasJumped;
 
     private bool CanPerformFirstJump() => (!birdJump.first.hasJumped && birdJump.isGrounded) || (birdJump.timeSinceOffGround < birdJump.coyoteTime);

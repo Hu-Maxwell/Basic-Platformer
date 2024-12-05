@@ -254,6 +254,7 @@ MonoBehaviour:
     hasJumped: 0
     threeFourthsTimeUp: 0
     threeFourthsTimeDown: 0
+    threeFourthsVelocity: 0
   second:
     name: 
     force: {x: 0, y: 0}
@@ -261,6 +262,7 @@ MonoBehaviour:
     hasJumped: 0
     threeFourthsTimeUp: 0
     threeFourthsTimeDown: 0
+    threeFourthsVelocity: 0
   wall:
     name: 
     force: {x: 0, y: 0}
@@ -268,14 +270,17 @@ MonoBehaviour:
     hasJumped: 0
     threeFourthsTimeUp: 0
     threeFourthsTimeDown: 0
-  lastJump:
+    threeFourthsVelocity: 0
+  curJump:
     name: 
     force: {x: 0, y: 0}
     timer: 0
     hasJumped: 0
     threeFourthsTimeUp: 0
     threeFourthsTimeDown: 0
+    threeFourthsVelocity: 0
   jumpDownVel: -5
+  toApexTime: 0
   timeSinceOffGround: 0
   isGrounded: 0
   isTouchingWall: 0
@@ -287,6 +292,7 @@ MonoBehaviour:
   originalGravityScale: 0
   disableWalk: 0
   disableWalkTime: 0.1
+  timeScale: 1
 --- !u!114 &349463752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1448,7 +1454,7 @@ CompositeCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:

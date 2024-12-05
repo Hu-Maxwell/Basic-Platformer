@@ -83,7 +83,7 @@ X. make it so that downforce isn't applied in the first .1s of jump
 X. make it so that the downforce 3/4th height restriction follows the same logic as slowdownonapex 
     - basically, if the player is already being slowed on apex, then downforce cannot be applied 
 
-- buffer for jump during dash 
+X. buffer for jump during dash 
 
 - slow down sliding down wall when touching wall (friction or gravity?)
 

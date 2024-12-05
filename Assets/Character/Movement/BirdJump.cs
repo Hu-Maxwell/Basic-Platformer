@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
-using System; 
+using System;
+using UnityEngine.Rendering;
 
 [System.Serializable]
 public class Jump
@@ -180,6 +181,25 @@ public class BirdJump : BirdCore
 
             elapsedTime += Time.deltaTime;
             yield return null; // waits until the next frame to continue
+        }
+    }
+
+    public IEnumerator BufferAnyJump() 
+    {
+        float elapsedTime = 0;
+        Debug.Log("buffering dash");
+
+        while (elapsedTime < firstJumpBuffer)
+        {
+            Debug.Log("trying buffered dash jump");
+            if (birdInput.TryPerformJump()) 
+            {
+                Debug.Log("buffered dash jump");
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null; 
         }
     }
 
