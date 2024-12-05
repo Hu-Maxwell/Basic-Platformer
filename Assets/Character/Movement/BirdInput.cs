@@ -11,7 +11,6 @@ public class BirdInput : BirdCore
 
     void FixedUpdate()
     {
-        // no if statements needed
         HandleWalkInput();
     }
 
@@ -30,7 +29,7 @@ public class BirdInput : BirdCore
 
         if (Input.GetKeyUp(KeyCode.Space) && birdJump.canApplyDownForce)
         {
-            birdJump.ExertDownForce();
+            birdJump.TryBufferDownForce();
         }
         #endregion
 

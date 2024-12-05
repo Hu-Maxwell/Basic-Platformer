@@ -64,7 +64,24 @@ X. make it so that the bounciness function only is applied if downforce hasn't b
 
 X. make it so that bounciness function is based off of current accel and vel
 
-- decrease buffer for jump and downforce
+X. decrease buffer for jump and downforce
+    - decreased buffer from .2 to .1
+    - decreased downforce from 2.5 to 2.0
+
+X. make it so that downforce isn't applied in the first .1s of jump
+    - added two functions: 
+    - bufferdownforce and trybufferdownforce 
+    - trybufferdownforce is called when space is let go 
+        - if the last jump was less than .1 seconds ago, then it waits until .1 seconds has passed since the last jump and then applies down force
+        - this prevents any super fast up and down movements
+        
+    - to recap the downforce restrictions: 
+        - it cannot be called if the velocity is < 0 (going down)
+        - cannot be called at 3/4ths of jump
+        - has a buffer in the first .1 second of a jump
+
+X. make it so that the downforce 3/4th height restriction follows the same logic as slowdownonapex 
+    - basically, if the player is already being slowed on apex, then downforce cannot be applied 
 
 - buffer for jump during dash 
 

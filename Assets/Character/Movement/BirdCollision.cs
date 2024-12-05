@@ -32,7 +32,7 @@ public class BirdCollision : BirdCore
         if (downRay)
         {
             birdJump.isGrounded = true;
-            birdJump.lastJump = null;
+            birdJump.curJump = null;
 
             birdJump.first.hasJumped = false;
             birdJump.second.hasJumped = false;
