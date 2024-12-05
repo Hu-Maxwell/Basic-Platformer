@@ -138,16 +138,16 @@ public class BirdJump : BirdCore
 
     public void CheckForSlowDownOnApex()
     {
-        if (birdDash.isDashing)
+        if (birdDash.isDashing) // || hasDownForced
         {
             return;
         }
 
+        // for small floating point cases or the isgroundcheck being inaccurate
         if (lastJump == null || isGrounded || rb.linearVelocityY == 0)
         {
             return;
         }
-
 
         // possible ways to implement: 
         // timer: during a certain timeframe after the player's jump, slowdown  
@@ -164,15 +164,15 @@ public class BirdJump : BirdCore
         // vi = 0 + at
         // t = vi / a 
 
-        float toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * rb.gravityScale);
+        float toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * 3); // 3 is a temp value because using rb.gravityscale wont work, grav scale is always changing
         toApexTime = Math.Abs(toApexTime); 
 
-        Debug.Log(toApexTime);
+        float toApexTimeThreshold = 0.2f;
 
-        // TODO: make it a gradual slowdown rather than immediate
-        if (toApexTime < .2f) {
-            // slowdown
-            rb.gravityScale = originalGravityScale * 0.7f;
+        if (toApexTime < toApexTimeThreshold) {
+            float fraction = 1 - (toApexTime / toApexTimeThreshold);
+            float slowDownGravity = Mathf.Lerp(originalGravityScale, originalGravityScale * 0.6f, fraction);
+            rb.gravityScale = slowDownGravity; 
         }
         else
         {

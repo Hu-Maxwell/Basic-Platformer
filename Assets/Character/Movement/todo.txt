@@ -59,15 +59,18 @@ X. separate all of input and movement into different files
 
 X. separate collison into a new file
 
-- make it so that bounciness function is based off of current accel and vel
+X. make it so that the bounciness function only is applied if downforce hasn't been applied yet or based off of velocity 
+    - doesn't need to be done if downforce hasn't been applied yet, fixed thru accel and vel bounciness solution because at that down vel it doesn't matter
 
-- make it so that the bounciness function only is applied if downforce hasn't been applied yet or based off of velocity
+X. make it so that bounciness function is based off of current accel and vel
 
-- decrease 
+- decrease buffer for jump and downforce
 
 - buffer for jump during dash 
 
 - slow down sliding down wall when touching wall (friction or gravity?)
+
+- change raycast to boxcast so isgrounded is true even if standing on edge
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
