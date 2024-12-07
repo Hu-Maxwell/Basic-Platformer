@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 349463748}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -220,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -243,6 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -279,7 +282,7 @@ MonoBehaviour:
     threeFourthsTimeUp: 0
     threeFourthsTimeDown: 0
     threeFourthsVelocity: 0
-  jumpDownVel: -5
+  jumpDownVel: -3
   toApexTime: 0
   timeSinceOffGround: 0
   isGrounded: 0
@@ -306,6 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -328,6 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -346,6 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -363,6 +369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -1646,6 +1653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
@@ -1948,6 +1956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  birdInput: {fileID: 0}
   birdWalk: {fileID: 0}
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}

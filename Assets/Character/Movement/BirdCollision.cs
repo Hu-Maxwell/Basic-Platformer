@@ -1,22 +1,27 @@
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using UnityEngine;
+using System;
 
 public class BirdCollision : BirdCore
 {
     [HideInInspector] public LayerMask levelLayer;
     [HideInInspector] public float rayLenX = 0.525f;
-    public float rayLenY = 1.005f;
+    [HideInInspector] public float rayLenY = 1.005f;
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f;
+    [HideInInspector] public float originalGravityScale; 
 
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
+        originalGravityScale = rb.gravityScale;
     }
 
     void Update()
     {
         CheckFloorCollision();
         CheckWallCollision();
+
+        FrictionOnWallManager();
     }
 
     public void CheckFloorCollision()
@@ -42,7 +47,7 @@ public class BirdCollision : BirdCore
         }
     }
 
-    void CheckWallCollision()
+    public void CheckWallCollision()
     {
         RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(1.01f, 1), 0, Vector2.left, 0, levelLayer);
 
@@ -53,6 +58,25 @@ public class BirdCollision : BirdCore
         else
         {
             birdJump.isTouchingWall = false;
+        }
+    }
+
+    public void FrictionOnWallManager() 
+    {
+        // if isTouchingWall or is going up
+        if (Math.Sign(rb.linearVelocityY) == 1) {
+            return;
+        }
+    
+        if (birdJump.isTouchingWall && rb.linearVelocityY != -1) 
+        {
+            rb.linearVelocityY = 0;
+            rb.gravityScale = 0;
+            rb.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);
+        }
+        else 
+        { 
+            rb.gravityScale = originalGravityScale; 
         }
     }
 }

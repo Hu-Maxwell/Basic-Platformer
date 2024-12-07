@@ -85,7 +85,7 @@ X. make it so that the downforce 3/4th height restriction follows the same logic
 
 X. buffer for jump during dash 
 
-- slow down sliding down wall when touching wall (friction or gravity?)
+X. slow down sliding down wall when touching wall (friction or gravity?)
     - can be done by simply reducing gravityscale when char is on wall
     - this doesn't really account for friction upwards tho
 
@@ -96,7 +96,8 @@ X. do same for wall but slightly less tall than the player so the player cant wa
 
 - make function names consistent
 
-- weird bug that doesnt always apply downforce? 
+- weird bug that doesnt always apply downforce on every jump? hard to replicate 
+- if you dash off the wall, sometimes gravity scale is 0. adding the wall slide introduced some glitches with gravity scale, and now it's 0 when touching floor as well
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun

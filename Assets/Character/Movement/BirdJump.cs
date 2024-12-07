@@ -146,7 +146,7 @@ public class BirdJump : BirdCore
 
     public void ApexSlowDownManager()
     {
-        if (birdDash.isDashing) 
+        if (birdDash.isDashing || isTouchingWall) 
         {
             return;
         }
