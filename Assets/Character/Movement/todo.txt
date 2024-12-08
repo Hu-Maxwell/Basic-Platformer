@@ -98,7 +98,10 @@ X. make it so that dashing when on wall does it in opposite side automatically
 
 X. if you dash off the wall, sometimes gravity scale is 0. adding the wall slide introduced some glitches with gravity scale, and now it's 0 when touching floor as well
 
-- isTouchingWall hitboxes arent perfect
+X. isTouchingWall hitboxes arent perfect
+
+- bug where if player is touching wall, gravity scale is 0
+- also related bug: if player holds direction in wall, linear velocity y slowly increases 
 
 - make function names consistent
 

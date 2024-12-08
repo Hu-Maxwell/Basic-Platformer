@@ -8,12 +8,10 @@ public class BirdCollision : BirdCore
     [HideInInspector] public float rayLenX = 0.525f;
     [HideInInspector] public float rayLenY = 1.005f;
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f;
-    [HideInInspector] public float originalGravityScale; 
 
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
-        originalGravityScale = rb.gravityScale;
     }
 
     void Update()
@@ -64,11 +62,14 @@ public class BirdCollision : BirdCore
     public void FrictionOnWallManager() 
     {
         // if is going up or is dashing
-        if (Math.Sign(rb.linearVelocityY) == 1 || birdDash.isDashing) {
+        if (birdDash.isDashing || !birdJump.isTouchingWall) 
+        {
             return;
         }
     
-        if (birdJump.isTouchingWall && rb.linearVelocityY != -1) 
+        float updatedGravityScale = rb.gravityScale; 
+        
+        if (Math.Sign(rb.linearVelocityY) == -1) 
         {
             rb.linearVelocityY = 0;
             rb.gravityScale = 0;
@@ -76,7 +77,7 @@ public class BirdCollision : BirdCore
         }
         else
         { 
-            rb.gravityScale = originalGravityScale; 
+            rb.gravityScale = updatedGravityScale; 
         }
     }
 }
