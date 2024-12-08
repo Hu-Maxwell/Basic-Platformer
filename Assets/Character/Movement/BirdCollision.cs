@@ -63,8 +63,8 @@ public class BirdCollision : BirdCore
 
     public void FrictionOnWallManager() 
     {
-        // if isTouchingWall or is going up
-        if (Math.Sign(rb.linearVelocityY) == 1) {
+        // if is going up or is dashing
+        if (Math.Sign(rb.linearVelocityY) == 1 || birdDash.isDashing) {
             return;
         }
     
@@ -74,7 +74,7 @@ public class BirdCollision : BirdCore
             rb.gravityScale = 0;
             rb.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);
         }
-        else 
+        else
         { 
             rb.gravityScale = originalGravityScale; 
         }

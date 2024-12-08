@@ -8,6 +8,7 @@ public class BirdDash : BirdCore
     [HideInInspector] public float timeSinceDashEnd;
     [HideInInspector] public bool canDash = true;
     [HideInInspector] public bool firstDash = true; 
+    [HideInInspector] float originalGravityScale;
 
     public float dashMultiplier = 3;
     public float dashTime = .25f;
@@ -16,6 +17,7 @@ public class BirdDash : BirdCore
 
     public void Update()
     {
+        originalGravityScale = rb.gravityScale;
         timeSinceDashEnd += Time.deltaTime;
         CanDashManager();
     }
@@ -25,15 +27,19 @@ public class BirdDash : BirdCore
         birdWalk.disableWalk = true;
         isDashing = true;
 
+        float direction = birdDirection.lookingDirectionX; 
+
+        if (birdJump.isTouchingWall) {
+            direction = -direction; 
+        }
         float oldVelX = rb.linearVelocityX;
-        float originalGravity = rb.gravityScale;
 
         rb.gravityScale = 0;
-        rb.linearVelocity = new Vector2(birdWalk.moveSpeed * dashMultiplier * birdDirection.lookingDirectionX, 0);
+        rb.linearVelocity = new Vector2(birdWalk.moveSpeed * dashMultiplier * direction, 0);
         
         yield return new WaitForSeconds(dashTime);
 
-        rb.gravityScale = originalGravity;
+        rb.gravityScale = originalGravityScale;
 
         // prevents the bird moving the opposite side after dash ends
         if (Mathf.Sign(oldVelX) != birdDirection.lookingDirectionX)

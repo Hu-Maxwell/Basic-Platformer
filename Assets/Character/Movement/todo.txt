@@ -94,10 +94,16 @@ X. slow down sliding down wall when touching wall (friction or gravity?)
 X. change raycast to boxcast so isgrounded is true even if standing on edge
 X. do same for wall but slightly less tall than the player so the player cant wall jump off of its hair
 
+X. make it so that dashing when on wall does it in opposite side automatically
+
+X. if you dash off the wall, sometimes gravity scale is 0. adding the wall slide introduced some glitches with gravity scale, and now it's 0 when touching floor as well
+
+- isTouchingWall hitboxes arent perfect
+
 - make function names consistent
 
 - weird bug that doesnt always apply downforce on every jump? hard to replicate 
-- if you dash off the wall, sometimes gravity scale is 0. adding the wall slide introduced some glitches with gravity scale, and now it's 0 when touching floor as well
+
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
