@@ -32,7 +32,7 @@ public class BirdJump : BirdCore
 
     #region bools
     [HideInInspector] public bool isGrounded = false;
-    [HideInInspector] public bool isTouchingWall = false;
+    public bool isTouchingWall = false;
     [HideInInspector] public bool canApplyDownForce = true;
     #endregion
 

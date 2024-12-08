@@ -49,7 +49,7 @@ public class BirdCollision : BirdCore
 
     public void CheckWallCollision()
     {
-        RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(1.01f, 1), 0, Vector2.left, 0, levelLayer);
+        RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(1.01f, 1.95f), 0, Vector2.left, 0, levelLayer);
 
         if (sideRay)
         {
