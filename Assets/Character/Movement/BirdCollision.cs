@@ -8,10 +8,13 @@ public class BirdCollision : BirdCore
     [HideInInspector] public float rayLenX = 0.525f;
     [HideInInspector] public float rayLenY = 1.005f;
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f;
+    [HideInInspector] public float originalGravityScale;
+
 
     void Start()
     {
         levelLayer = LayerMask.GetMask("level");
+        originalGravityScale = rb.gravityScale;
     }
 
     void Update()
@@ -80,7 +83,7 @@ public class BirdCollision : BirdCore
             rb.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);
         }
         else if (rb.linearVelocityY == 0) {
-            rb.gravityScale = 3; // the og gravity scale
+            rb.gravityScale = originalGravityScale; 
         }
     }
 }

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections; // allows for IEnumerator
 
+/// <summary>
+/// executes the bird's dash movement by applying horizontal velocity and disabling gravity
+/// </summary>
 public class BirdDash : BirdCore
 {
     #region vars
@@ -8,11 +11,12 @@ public class BirdDash : BirdCore
     [HideInInspector] public float timeSinceDashEnd;
     [HideInInspector] public bool canDash = true;
     [HideInInspector] public bool firstDash = true; 
-    [HideInInspector]public float originalGravityScale;
+    [HideInInspector] public float originalGravityScale;
 
-    public float dashMultiplier = 3;
-    public float dashTime = .25f;
-    float dashCooldown = 0.3f;
+    [SerializeField] private float dashMultiplier = 3;
+    [SerializeField] private float dashTime = .25f;
+    [SerializeField] private float dashCooldown = 0.3f;
+    
     #endregion
 
     public void Start() 
@@ -26,26 +30,17 @@ public class BirdDash : BirdCore
         CanDashManager();
     }
 
-    public IEnumerator Dash()
+    private void ApplyDashForce(float direction)
     {
-        birdWalk.disableWalk = true;
-        isDashing = true;
-
-        float direction = birdDirection.lookingDirectionX; 
-
-        if (birdJump.isTouchingWall) {
-            direction = -direction; 
-        }
-        float oldVelX = rb.linearVelocityX;
-
         rb.gravityScale = 0;
         rb.linearVelocity = new Vector2(birdWalk.moveSpeed * dashMultiplier * direction, 0);
-        
-        yield return new WaitForSeconds(dashTime);
+    }
 
+    private void RestorePostDash(float oldVelX)
+    {
         rb.gravityScale = originalGravityScale;
 
-        // prevents the bird moving the opposite side after dash ends
+        // prevents bird from looking in opposite dir after dash ends
         if (Mathf.Sign(oldVelX) != birdDirection.lookingDirectionX)
         {
             rb.linearVelocityX = 0; 
@@ -55,10 +50,32 @@ public class BirdDash : BirdCore
             rb.linearVelocityX = oldVelX;
         }
 
-
         timeSinceDashEnd = 0;
-        birdWalk.disableWalk = false; 
+        birdWalk.disableWalk = false;
         isDashing = false;
+    }
+
+    private float GetDashDirection()
+    {
+        // reverses direction if bird is touching wall
+        return birdJump.isTouchingWall 
+            ? -birdDirection.lookingDirectionX 
+            : birdDirection.lookingDirectionX;
+    }
+
+    public IEnumerator Dash()
+    {
+        birdWalk.disableWalk = true;
+        isDashing = true;
+
+        float direction = GetDashDirection();
+        float oldVelX = rb.linearVelocityX;
+
+        ApplyDashForce(direction);
+
+        yield return new WaitForSeconds(dashTime);
+
+        RestorePostDash(oldVelX);
     }
 
     public void CanDashManager()
