@@ -33,7 +33,7 @@ public class BirdDash : BirdCore
     private void ApplyDashForce(float direction)
     {
         rb.gravityScale = 0;
-        rb.linearVelocity = new Vector2(birdWalk.moveSpeed * dashMultiplier * direction, 0);
+        rb.linearVelocity = new Vector2(birdWalk.MoveSpeed * dashMultiplier * direction, 0);
     }
 
     private void RestorePostDash(float oldVelX)

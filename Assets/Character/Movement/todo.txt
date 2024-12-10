@@ -108,7 +108,9 @@ X. also related bug: if player holds direction in wall, linear velocity y slowly
 - make function names consistent
 
 - weird bug that doesnt always apply downforce on every jump? hard to replicate 
-
+- sometimes dash goes downwards if applydownforce is done 
+- dash does not apply down force if space is let go during jump during dash buffer
+- bird faces wrong direction if dashing off wall (easy fix)
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
