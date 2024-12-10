@@ -69,15 +69,18 @@ public class BirdCollision : BirdCore
     
         float updatedGravityScale = rb.gravityScale; 
         
-        if (Math.Sign(rb.linearVelocityY) == -1) 
+        if (rb.linearVelocityY > 0) 
+        {
+            rb.gravityScale = updatedGravityScale; 
+        }
+        else if(rb.linearVelocityY < 0) 
         {
             rb.linearVelocityY = 0;
             rb.gravityScale = 0;
             rb.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);
         }
-        else
-        { 
-            rb.gravityScale = updatedGravityScale; 
+        else if (rb.linearVelocityY == 0) {
+            rb.gravityScale = 3; // the og gravity scale
         }
     }
 }
