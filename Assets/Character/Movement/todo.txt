@@ -105,7 +105,10 @@ X. bug where if player is touching wall, gravity scale is 0
 X. also related bug: if player holds direction in wall, linear velocity y slowly increases 
     - fixed by setting offset distance to 0 in composite collider 2d
 
-- make function names consistent
+current working on: 
+- make function names consistent 
+- cleaning up birdInput -> birdJump -> birdCollision -> birdDirection 
+
 
 - weird bug that doesnt always apply downforce on every jump? hard to replicate 
 - sometimes dash goes downwards if applydownforce is done 
