@@ -8,16 +8,20 @@ public class BirdDash : BirdCore
     [HideInInspector] public float timeSinceDashEnd;
     [HideInInspector] public bool canDash = true;
     [HideInInspector] public bool firstDash = true; 
-    [HideInInspector] float originalGravityScale;
+    [HideInInspector]public float originalGravityScale;
 
     public float dashMultiplier = 3;
     public float dashTime = .25f;
     float dashCooldown = 0.3f;
     #endregion
 
-    public void Update()
+    public void Start() 
     {
         originalGravityScale = rb.gravityScale;
+    }
+
+    public void Update()
+    {
         timeSinceDashEnd += Time.deltaTime;
         CanDashManager();
     }

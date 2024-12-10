@@ -100,7 +100,7 @@ X. if you dash off the wall, sometimes gravity scale is 0. adding the wall slide
 
 X. isTouchingWall hitboxes arent perfect
 
-- bug where if player is touching wall, gravity scale is 0
+X. bug where if player is touching wall, gravity scale is 0
 
 X. also related bug: if player holds direction in wall, linear velocity y slowly increases 
     - fixed by setting offset distance to 0 in composite collider 2d
