@@ -92,7 +92,7 @@ X. slow down sliding down wall when touching wall (friction or gravity?)
     - or do it by applying an opposite force in y direction 
 
 X. change raycast to boxcast so isgrounded is true even if standing on edge
-X. do same for wall but slightly less tall than the player so the player cant wall jump off of its hair
+X. do same for wall but slightly less tallSthan the player so the player cant wall jump off of its hair
 
 X. make it so that dashing when on wall does it in opposite side automatically
 
@@ -101,7 +101,9 @@ X. if you dash off the wall, sometimes gravity scale is 0. adding the wall slide
 X. isTouchingWall hitboxes arent perfect
 
 - bug where if player is touching wall, gravity scale is 0
-- also related bug: if player holds direction in wall, linear velocity y slowly increases 
+
+X. also related bug: if player holds direction in wall, linear velocity y slowly increases 
+    - fixed by setting offset distance to 0 in composite collider 2d
 
 - make function names consistent
 
