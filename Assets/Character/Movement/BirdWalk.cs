@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class BirdWalk : BirdCore
-{
+public class BirdWalk : BirdCore {
     #region vars
     [HideInInspector] public bool disableWalk = false;
 
@@ -13,23 +12,19 @@ public class BirdWalk : BirdCore
     private const float MIN_SPEED_THRESHOLD = 0.01f;
     #endregion
 
-    public float MoveSpeed
-    {
+    public float MoveSpeed {
         get { return moveSpeed; }
     }
 
-    private float CalculateAccelerationRate(float targetSpeed)
-    {
+    private float CalculateAccelerationRate(float targetSpeed) {
         return (Mathf.Abs(targetSpeed) > MIN_SPEED_THRESHOLD) ? accelAmount : decelAmount;
     }
 
-    private float CalculateForce(float speedDiff, float accelRate)
-    {
+    private float CalculateForce(float speedDiff, float accelRate) {
         return Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
     }
 
-    public void Walk(float direction)
-    {
+    public void Walk(float direction) {
         if (disableWalk) return;
 
         float targetSpeed = direction * moveSpeed;
@@ -39,5 +34,4 @@ public class BirdWalk : BirdCore
 
         rb.AddForce(new Vector2(forceApplied, 0));
     }
-
 }
