@@ -14,29 +14,26 @@ public class Jump {
 }
 
 public class BirdJump : BirdCore {
+    #region vars 
     public Jump first;
     public Jump second;
     public Jump wall;
 
-    List<Jump> jumps = new List<Jump>();
+    List<Jump> jumps;
     [HideInInspector] public Jump curJump;
 
     [HideInInspector] public float jumpDownVel = -2.0f;
     [HideInInspector] public float toApexTime = 0; 
     [HideInInspector] public float timeSinceOffGround;
 
-    #region bools
     [HideInInspector] public bool canApplyDownForce = true;
-    #endregion
 
-    #region buffers
     [HideInInspector] public float coyoteTime = 0.1f;
+    [HideInInspector] public float waitUntilDownForceTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
     [HideInInspector] public float firstJumpBuffer = 0.03f;
     [HideInInspector] public float originalGravityScale; 
-    #endregion
 
-    #region wall jump manager
     [HideInInspector] public bool disableWalk = false;
     [HideInInspector] public float disableWalkTime = 0.15f;
     #endregion
@@ -54,30 +51,19 @@ public class BirdJump : BirdCore {
 
     #region jumps
 
-    // keeping FirstJump and SecondJump separate in case if needed
-    public void FirstJump() {
-        rb.linearVelocityY = 0;
-        rb.AddForce(first.force, ForceMode2D.Impulse);
-        
-        first.hasJumped = true;
-        first.timer = 0; 
+    private void PerformJump(Jump jump, Vector2 extraForce) {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0); 
+        rb.AddForce(jump.force + extraForce, ForceMode2D.Impulse);
+
+        jump.hasJumped = true;
+        jump.timer = 0;
 
         canApplyDownForce = true;
-
-        curJump = first;
+        curJump = jump;
     }
 
-    public void SecondJump() {
-        rb.linearVelocityY = 0;
-        rb.AddForce(second.force, ForceMode2D.Impulse);
-
-        second.hasJumped = true;
-        second.timer = 0;
-
-        canApplyDownForce = true;
-
-        curJump = second;
-    }
+    public void FirstJump() => PerformJump(first, Vector2.zero);
+    public void SecondJump() => PerformJump(second, Vector2.zero);
 
     public void WallJump() {
         rb.linearVelocityY = 0;
@@ -102,6 +88,8 @@ public class BirdJump : BirdCore {
 
     #region buffers
 
+    // combine bufferfirst and buffer avail? 
+
     public IEnumerator BufferFirstJump() {
         float elapsedTime = 0;
 
@@ -112,7 +100,7 @@ public class BirdJump : BirdCore {
             }
 
             elapsedTime += Time.deltaTime;
-            yield return null; // waits until the next frame to continue
+            yield return null; 
         }
     }
 
@@ -128,18 +116,11 @@ public class BirdJump : BirdCore {
         }
     }
 
-    public void TryBufferDownForce() {
-        if (curJump != null && curJump.timer < 0.1f) // kinda bad bc .1f is repeated twice in the code. try to get a variable for this
-            StartCoroutine(WaitForDownForceBuffer());
-        else
-            ExertDownForce(); 
-    }
-
-    public IEnumerator WaitForDownForceBuffer() { 
-        // while time since jump is < .1
+    public IEnumerator TryBufferDownForce() { 
         float curJumpTimer = curJump.timer; 
-        while (curJump != null && curJump.timer < 0.1f) {
-            // if player jumps, cancel
+
+        // if player jumps, cancel
+        while (curJump != null && curJump.timer < waitUntilDownForceTime) {
             // checks if player's current jump changed at any point using timer
             if(curJump.timer < curJumpTimer)
                 yield break; 
@@ -241,6 +222,8 @@ public class BirdJump : BirdCore {
 
         wall.name = "wall";
         wall.force = new Vector2(5, 15);
+
+        jumps = new List<Jump> { first, second, wall };
 
         foreach (var jump in jumps) {
             jump.timer = 0;
