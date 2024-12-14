@@ -9,13 +9,12 @@ public class BirdDash : BirdCore
     #region vars
     [HideInInspector] public bool isDashing;
     [HideInInspector] public float timeSinceDashEnd;
-    [HideInInspector] public bool canDash = true;
     [HideInInspector] public bool firstDash = true; 
     [HideInInspector] public float originalGravityScale;
 
     [SerializeField] private float dashMultiplier = 3;
     [SerializeField] private float dashTime = .25f;
-    [SerializeField] private float dashCooldown = 0.3f;
+    [SerializeField] public float dashCooldown = 0.3f;
     
     #endregion
 
@@ -27,7 +26,6 @@ public class BirdDash : BirdCore
     public void Update()
     {
         timeSinceDashEnd += Time.deltaTime;
-        CanDashManager();
     }
 
     private void ApplyDashForce(float direction)
@@ -67,6 +65,7 @@ public class BirdDash : BirdCore
     {
         birdWalk.disableWalk = true;
         isDashing = true;
+        firstDash = false; 
 
         float direction = GetDashDirection();
         float oldVelX = rb.linearVelocityX;
@@ -76,20 +75,5 @@ public class BirdDash : BirdCore
         yield return new WaitForSeconds(dashTime);
 
         RestorePostDash(oldVelX);
-    }
-
-    public void CanDashManager()
-    {
-        // allows for first dash the first dashCooldown seconds of program
-        if (firstDash)
-        {
-            if (isDashing)
-            {
-                firstDash = false;
-            }
-            return; 
-        }
-
-        canDash = timeSinceDashEnd > dashCooldown;
     }
 }

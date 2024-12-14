@@ -2,12 +2,13 @@ using UnityEngine;
 using System.Collections; // allows for IEnumerator
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Unity.VisualScripting;
+using UnityEngine.AI;
 
 public class BirdInput : BirdCore
 {
     void Update()
     {
-        InputManager(); 
+        CheckInputs(); 
     }
 
     void FixedUpdate()
@@ -15,27 +16,16 @@ public class BirdInput : BirdCore
         HandleWalkInput();
     }
 
-    public void InputManager()
+    public void CheckInputs()
     {
-        #region jump
         if (Input.GetKeyDown(KeyCode.Space))
-        {
             HandleJumpInput();
-        }
 
-        if (Input.GetKeyUp(KeyCode.Space) && birdJump.canApplyDownForce && !birdDash.isDashing) // change to condition method
-        {
-            birdJump.TryBufferDownForce();
-        }
-        #endregion
+        if (Input.GetKeyUp(KeyCode.Space)) 
+            HandleReleaseJumpInput();
 
-        // can dash while dashing
-        #region dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !birdDash.isDashing)
-        {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
             HandleDashInput();
-        }
-        #endregion
     }
 
     #region movement handlers
@@ -50,6 +40,8 @@ public class BirdInput : BirdCore
         float direction = Input.GetAxisRaw("Horizontal");
         birdWalk.Walk(direction);
     }
+
+    #region jump
 
     public void HandleJumpInput()
     {
@@ -98,9 +90,19 @@ public class BirdInput : BirdCore
         }
     }
 
+    public void HandleReleaseJumpInput() 
+    {
+        if(birdJump.canApplyDownForce && !birdDash.isDashing) 
+        {
+            birdJump.TryBufferDownForce();
+        }
+    }
+
+    #endregion
+
     void HandleDashInput()
     {
-        if (birdDash.canDash)
+        if (CanDash())
         {
             StartCoroutine(birdDash.Dash());
         }
@@ -117,5 +119,7 @@ public class BirdInput : BirdCore
     private bool CanPerformWallJump() => !birdJump.isGrounded && birdJump.isTouchingWall;
 
     private bool CanPerformSecondJump() => !birdJump.isGrounded && !birdJump.second.hasJumped && birdJump.first.timer > 0.05f;
+
+    private bool CanDash() => birdDash.firstDash || (!birdDash.isDashing && birdDash.timeSinceDashEnd > birdDash.dashCooldown);  
     #endregion
 }

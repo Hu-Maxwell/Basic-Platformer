@@ -230,8 +230,10 @@ MonoBehaviour:
   timeSinceDashEnd: 0
   canDash: 1
   firstDash: 1
+  originalGravityScale: 0
   dashMultiplier: 3.5
   dashTime: 0.25
+  dashCooldown: 0.3
 --- !u!114 &349463751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +382,7 @@ MonoBehaviour:
   rayLenX: 0.525
   rayLenY: 1.01
   ignoreGroundCheckTime: 0.05
+  originalGravityScale: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,18 +1492,18 @@ CompositeCollider2D:
         Y: -50000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 9.99997, y: -5}
-      - {x: 9.99997, y: -4}
-      - {x: 3, y: -3.9999704}
-      - {x: 2.999971, y: -2}
-      - {x: -5, y: -1.9999707}
-      - {x: -5.000029, y: 2}
-      - {x: -7, y: 1.9999708}
-      - {x: -7.0000296, y: -2}
-      - {x: -11, y: -2.0000293}
-      - {x: -10.99997, y: -5}
+    - - {x: 10, y: -4}
+      - {x: 3, y: -4}
+      - {x: 3, y: -2}
+      - {x: -5, y: -2}
+      - {x: -5, y: 2}
+      - {x: -7, y: 2}
+      - {x: -7, y: -2}
+      - {x: -11, y: -2}
+      - {x: -11, y: -5}
+      - {x: 10, y: -5}
   m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
+  m_OffsetDistance: 0
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 799304123}
 --- !u!50 &799304130
