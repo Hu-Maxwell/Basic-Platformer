@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class BirdCore : MonoBehaviour
-{
+public class BirdCore : MonoBehaviour {
     [HideInInspector] public Rigidbody2D rb;
 
     [HideInInspector] public BirdInput birdInput;
@@ -10,8 +9,7 @@ public class BirdCore : MonoBehaviour
     [HideInInspector] public BirdDash birdDash;
     [HideInInspector] public BirdDirection birdDirection; 
 
-    void Awake()
-    {
+    void Awake() {
         birdInput = GetComponent<BirdInput>(); 
         birdWalk = GetComponent<BirdWalk>();
         birdJump = GetComponent<BirdJump>();
