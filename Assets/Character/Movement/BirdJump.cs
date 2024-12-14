@@ -18,7 +18,7 @@ public class BirdJump : BirdCore {
     public Jump second;
     public Jump wall;
 
-    List<Jump> jumps;
+    List<Jump> jumps = new List<Jump>();
     [HideInInspector] public Jump curJump;
 
     [HideInInspector] public float jumpDownVel = -2.0f;
@@ -42,15 +42,17 @@ public class BirdJump : BirdCore {
     #endregion
     
     void Start() {
-        InitializeVariables(); 
+        InitializeJumpVariables(); 
     }
 
     void Update() {
-        ManageTimers();
+        UpdateTimers();
 
-        ApexSlowDownManager();
-        CanDownForceManager();
+        AdjustGravityAtApex();
+        UpdateDownForceState();
     }
+
+    #region jumps
 
     // keeping FirstJump and SecondJump separate in case if needed
     public void FirstJump() {
@@ -88,7 +90,7 @@ public class BirdJump : BirdCore {
         canApplyDownForce = true;
         curJump = wall;
 
-        StartCoroutine(DisableWalkFromWallJump());
+        StartCoroutine(DisableWalkTemporarily());
     }
 
     public void ExertDownForce() {
@@ -96,6 +98,69 @@ public class BirdJump : BirdCore {
         canApplyDownForce = false;
     }
 
+    #endregion
+
+    #region buffers
+
+    public IEnumerator BufferFirstJump() {
+        float elapsedTime = 0;
+
+        while (elapsedTime < firstJumpBuffer) {
+            if(birdCollision.isGrounded) {
+                FirstJump();
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // waits until the next frame to continue
+        }
+    }
+
+    public IEnumerator BufferAvailableJump() {
+        float elapsedTime = 0;
+
+        while (elapsedTime < firstJumpBuffer) {
+            if (birdInput.TryPerformJump()) 
+                yield break;
+
+            elapsedTime += Time.deltaTime;
+            yield return null; 
+        }
+    }
+
+    public void TryBufferDownForce() {
+        if (curJump != null && curJump.timer < 0.1f) // kinda bad bc .1f is repeated twice in the code. try to get a variable for this
+            StartCoroutine(WaitForDownForceBuffer());
+        else
+            ExertDownForce(); 
+    }
+
+    public IEnumerator WaitForDownForceBuffer() { 
+        // while time since jump is < .1
+        float curJumpTimer = curJump.timer; 
+        while (curJump != null && curJump.timer < 0.1f) {
+            // if player jumps, cancel
+            // checks if player's current jump changed at any point using timer
+            if(curJump.timer < curJumpTimer)
+                yield break; 
+
+            curJumpTimer = curJump.timer;
+
+            yield return null; 
+        }
+
+        ExertDownForce(); 
+    }
+
+    public IEnumerator DisableWalkTemporarily() {
+        birdWalk.disableWalk = true;
+        yield return new WaitForSeconds(disableWalkTime);
+        birdWalk.disableWalk = false; 
+    }
+
+    #endregion
+
+    #region jump tweaks
     public void CalculateToApexTime() {
         if (curJump == null) 
         {
@@ -107,7 +172,7 @@ public class BirdJump : BirdCore {
         toApexTime = Math.Abs(toApexTime); 
     }
 
-    public void CanDownForceManager() {
+    public void UpdateDownForceState() {
         if (rb.linearVelocityY < 0)
         {
             canApplyDownForce = false;
@@ -126,7 +191,7 @@ public class BirdJump : BirdCore {
         }
     }
 
-    public void ApexSlowDownManager() {
+    public void AdjustGravityAtApex() {
         // prolly combine these two or smth
         if (birdDash.isDashing || birdCollision.isTouchingWall) 
         {
@@ -137,8 +202,6 @@ public class BirdJump : BirdCore {
         {
             return;
         }
-
-
 
         float toApexTimeThreshold = 0.2f;
 
@@ -152,64 +215,11 @@ public class BirdJump : BirdCore {
         }
     }
 
-    public IEnumerator BufferFirstJump() {
-        float elapsedTime = 0;
+    #endregion
 
-        while (elapsedTime < firstJumpBuffer) {
-            if(birdCollision.isGrounded) {
-                FirstJump();
-                yield break;
-            }
+    #region variable managers
 
-            elapsedTime += Time.deltaTime;
-            yield return null; // waits until the next frame to continue
-        }
-    }
-
-    public IEnumerator BufferAnyJump() {
-        float elapsedTime = 0;
-
-        while (elapsedTime < firstJumpBuffer) {
-            if (birdInput.TryPerformJump()) 
-                yield break;
-
-            elapsedTime += Time.deltaTime;
-            yield return null; 
-        }
-    }
-
-    public IEnumerator BufferDownForce() { 
-        // while time since jump is < .1
-        float curJumpTimer = curJump.timer; 
-        while (curJump != null && curJump.timer < 0.1f) {
-            // if player jumps, cancel
-            // checks if player's current jump changed at any point using timer
-            if(curJump.timer < curJumpTimer)
-                yield break; 
-
-            curJumpTimer = curJump.timer;
-
-            yield return null; 
-        }
-
-        ExertDownForce(); 
-    }
-
-    public void TryBufferDownForce() {
-        if (curJump != null && curJump.timer < 0.1f) // kinda bad bc .1f is repeated twice in the code. try to get a variable for this
-            StartCoroutine(BufferDownForce());
-        else
-            ExertDownForce(); 
-    }
-
-
-    public IEnumerator DisableWalkFromWallJump() {
-        birdWalk.disableWalk = true;
-        yield return new WaitForSeconds(disableWalkTime);
-        birdWalk.disableWalk = false; 
-    }
-
-    void ManageTimers() {
+    void UpdateTimers() {
         first.timer += Time.deltaTime;
         second.timer += Time.deltaTime;
         wall.timer += Time.deltaTime;
@@ -222,7 +232,7 @@ public class BirdJump : BirdCore {
         CalculateToApexTime();
     }
 
-    void InitializeVariables() {
+    void InitializeJumpVariables() {
         first.name = "first";
         first.force = new Vector2(0, 15);
 
@@ -239,4 +249,5 @@ public class BirdJump : BirdCore {
 
         originalGravityScale = rb.gravityScale;
     }
+    #endregion
 }

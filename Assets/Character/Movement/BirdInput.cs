@@ -65,7 +65,7 @@ public class BirdInput : BirdCore {
 
     public void HandleJumpBuffers() {
         if (birdDash.isDashing) 
-            StartCoroutine(birdJump.BufferAnyJump()); 
+            StartCoroutine(birdJump.BufferAvailableJump()); 
         else if (ShouldBufferFirstJump()) 
             StartCoroutine(birdJump.BufferFirstJump()); 
     }
