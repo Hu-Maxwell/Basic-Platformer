@@ -4,20 +4,16 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Unity.VisualScripting;
 using UnityEngine.AI;
 
-public class BirdInput : BirdCore
-{
-    void Update()
-    {
+public class BirdInput : BirdCore {
+    void Update() {
         CheckInputs(); 
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         HandleWalkInput();
     }
 
-    public void CheckInputs()
-    {
+    public void CheckInputs() {
         if (Input.GetKeyDown(KeyCode.Space))
             HandleJumpInput();
 
@@ -30,12 +26,9 @@ public class BirdInput : BirdCore
 
     #region movement handlers
 
-    public void HandleWalkInput()
-    {
+    public void HandleWalkInput() {
         if (birdWalk.disableWalk)
-        {
             return;
-        }
 
         float direction = Input.GetAxisRaw("Horizontal");
         birdWalk.Walk(direction);
@@ -43,35 +36,26 @@ public class BirdInput : BirdCore
 
     #region jump
 
-    public void HandleJumpInput()
-    {
+    public void HandleJumpInput() {
         if (TryPerformJump()) 
-        { 
             return;
-        } 
         else
-        {
             HandleJumpBuffers(); 
-        }
     }
 
     public bool TryPerformJump() {
-        if (birdDash.isDashing) {
+        if (birdDash.isDashing) 
             return false;
-        }
 
-        if (CanPerformFirstJump())
-        {
+        if (CanPerformFirstJump()) {
             birdJump.FirstJump();
             return true; 
         }
-        else if (CanPerformWallJump())
-        {
+        else if (CanPerformWallJump()) {
             birdJump.WallJump();
             return true;
         }
-        else if (CanPerformSecondJump())
-        {
+        else if (CanPerformSecondJump()) {
             birdJump.SecondJump();
             return true;
         }
@@ -81,31 +65,21 @@ public class BirdInput : BirdCore
 
     public void HandleJumpBuffers() {
         if (birdDash.isDashing) 
-        {
             StartCoroutine(birdJump.BufferAnyJump()); 
-        }
         else if (ShouldBufferFirstJump()) 
-        {
             StartCoroutine(birdJump.BufferFirstJump()); 
-        }
     }
 
-    public void HandleReleaseJumpInput() 
-    {
+    public void HandleReleaseJumpInput() {
         if(birdJump.canApplyDownForce && !birdDash.isDashing) 
-        {
             birdJump.TryBufferDownForce();
-        }
     }
 
     #endregion
 
-    void HandleDashInput()
-    {
+    void HandleDashInput() {
         if (CanDash())
-        {
             StartCoroutine(birdDash.Dash());
-        }
     }
 
     #endregion
