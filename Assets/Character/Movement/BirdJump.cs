@@ -31,8 +31,6 @@ public class BirdJump : BirdCore
     [HideInInspector] public float timeSinceOffGround;
 
     #region bools
-    [HideInInspector] public bool isGrounded = false;
-    public bool isTouchingWall = false;
     [HideInInspector] public bool canApplyDownForce = true;
     #endregion
 
@@ -146,13 +144,13 @@ public class BirdJump : BirdCore
 
     public void ApexSlowDownManager()
     {
-        if (birdDash.isDashing || isTouchingWall) 
+        if (birdDash.isDashing || birdCollision.isTouchingWall) 
         {
             return;
         }
 
         // for small floating point cases or the isgroundcheck being inaccurate
-        if (curJump == null || isGrounded || rb.linearVelocityY == 0)
+        if (curJump == null || birdCollision.isGrounded || rb.linearVelocityY == 0)
         {
             return;
         }
@@ -178,7 +176,7 @@ public class BirdJump : BirdCore
 
         while (elapsedTime < firstJumpBuffer)
         {
-            if(isGrounded)
+            if(birdCollision.isGrounded)
             {
                 FirstJump();
                 yield break;
@@ -253,7 +251,7 @@ public class BirdJump : BirdCore
 
         timeSinceOffGround += Time.deltaTime;
 
-        if (isGrounded)
+        if (birdCollision.isGrounded)
         {
             timeSinceOffGround = 0;
         }

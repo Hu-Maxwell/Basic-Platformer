@@ -10,6 +10,8 @@ public class BirdCollision : BirdCore
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f;
     [HideInInspector] public float originalGravityScale;
 
+    [HideInInspector] public bool isGrounded = false;
+    [HideInInspector] public bool isTouchingWall = false;
 
     void Start()
     {
@@ -36,7 +38,7 @@ public class BirdCollision : BirdCore
 
         if (downRay)
         {
-            birdJump.isGrounded = true;
+            isGrounded = true;
             birdJump.curJump = null;
 
             birdJump.first.hasJumped = false;
@@ -44,7 +46,7 @@ public class BirdCollision : BirdCore
         }
         else
         {
-            birdJump.isGrounded = false;
+            isGrounded = false;
         }
     }
 
@@ -54,18 +56,18 @@ public class BirdCollision : BirdCore
 
         if (sideRay)
         {
-            birdJump.isTouchingWall = true;
+            isTouchingWall = true;
         }
         else
         {
-            birdJump.isTouchingWall = false;
+            isTouchingWall = false;
         }
     }
 
     public void FrictionOnWallManager() 
     {
         // if is going up or is dashing
-        if (birdDash.isDashing || !birdJump.isTouchingWall) 
+        if (birdDash.isDashing || !isTouchingWall) 
         {
             return;
         }

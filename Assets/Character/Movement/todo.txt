@@ -106,8 +106,10 @@ X. also related bug: if player holds direction in wall, linear velocity y slowly
     - fixed by setting offset distance to 0 in composite collider 2d
 
 currently working on: 
-- make function names consistent 
+- making function names consistent 
 - cleaning up birdInput -> birdJump -> birdCollision -> birdDirection 
+    X. birdInput
+    
 - adding summaries for every file
 
 

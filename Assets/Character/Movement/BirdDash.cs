@@ -46,7 +46,7 @@ public class BirdDash : BirdCore {
 
     private float GetDashDirection() {
         // reverses direction if bird is touching wall
-        return birdJump.isTouchingWall 
+        return birdCollision.isTouchingWall 
             ? -birdDirection.lookingDirectionX 
             : birdDirection.lookingDirectionX;
     }

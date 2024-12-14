@@ -85,14 +85,13 @@ public class BirdInput : BirdCore {
     #endregion
 
     #region condition methods
-
     private bool ShouldBufferFirstJump() => birdJump.first.hasJumped && birdJump.second.hasJumped;
 
-    private bool CanPerformFirstJump() => (!birdJump.first.hasJumped && birdJump.isGrounded) || (birdJump.timeSinceOffGround < birdJump.coyoteTime);
+    private bool CanPerformFirstJump() => (!birdJump.first.hasJumped && birdCollision.isGrounded) || (birdJump.timeSinceOffGround < birdJump.coyoteTime);
 
-    private bool CanPerformWallJump() => !birdJump.isGrounded && birdJump.isTouchingWall;
+    private bool CanPerformWallJump() => !birdCollision.isGrounded && birdCollision.isTouchingWall;
 
-    private bool CanPerformSecondJump() => !birdJump.isGrounded && !birdJump.second.hasJumped && birdJump.first.timer > 0.05f;
+    private bool CanPerformSecondJump() => !birdCollision.isGrounded && !birdJump.second.hasJumped && birdJump.first.timer > 0.05f;
 
     private bool CanDash() => birdDash.firstDash || (!birdDash.isDashing && birdDash.timeSinceDashEnd > birdDash.dashCooldown);  
     #endregion
