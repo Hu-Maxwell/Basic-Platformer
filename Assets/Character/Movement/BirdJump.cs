@@ -6,19 +6,14 @@ using System;
 using UnityEngine.Rendering;
 
 [System.Serializable]
-public class Jump
-{
+public class Jump {
     public string name;
     public Vector2 force;
     public float timer;
     public bool hasJumped;
-    public float threeFourthsTimeUp;
-    public float threeFourthsTimeDown;
-    public float threeFourthsVelocity; 
 }
 
-public class BirdJump : BirdCore
-{
+public class BirdJump : BirdCore {
     public Jump first;
     public Jump second;
     public Jump wall;
@@ -35,7 +30,6 @@ public class BirdJump : BirdCore
     #endregion
 
     #region buffers
-    [HideInInspector] public float timeToThreeFourthsJumpHeight = 0.5f;
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
     [HideInInspector] public float firstJumpBuffer = 0.03f;
@@ -47,24 +41,19 @@ public class BirdJump : BirdCore
     [HideInInspector] public float disableWalkTime = 0.15f;
     #endregion
     
-    public float timeScale = 1; 
-    void Start()
-    {
+    void Start() {
         InitializeVariables(); 
     }
 
-    void Update()
-    {
-        Time.timeScale = timeScale; 
+    void Update() {
         ManageTimers();
 
         ApexSlowDownManager();
         CanDownForceManager();
     }
 
-    // although the same as secondJump, i am keeping these separate in case of needing to make first jump unique
-    public void FirstJump()
-    {
+    // keeping FirstJump and SecondJump separate in case if needed
+    public void FirstJump() {
         rb.linearVelocityY = 0;
         rb.AddForce(first.force, ForceMode2D.Impulse);
         
@@ -76,8 +65,7 @@ public class BirdJump : BirdCore
         curJump = first;
     }
 
-    public void SecondJump()
-    {
+    public void SecondJump() {
         rb.linearVelocityY = 0;
         rb.AddForce(second.force, ForceMode2D.Impulse);
 
@@ -89,8 +77,7 @@ public class BirdJump : BirdCore
         curJump = second;
     }
 
-    public void WallJump()
-    {
+    public void WallJump() {
         rb.linearVelocityY = 0;
         rb.AddForce(Vector2.up * wall.force.y, ForceMode2D.Impulse);
         rb.AddForce(Vector2.right * wall.force.x * -birdDirection.lookingDirectionX, ForceMode2D.Impulse);
@@ -104,26 +91,23 @@ public class BirdJump : BirdCore
         StartCoroutine(DisableWalkFromWallJump());
     }
 
-    public void ExertDownForce()
-    {
+    public void ExertDownForce() {
         rb.linearVelocityY = jumpDownVel;
         canApplyDownForce = false;
     }
 
-    public void CalculateToApexTime() 
-    {
+    public void CalculateToApexTime() {
         if (curJump == null) 
         {
             toApexTime = 0; 
             return;
         }
 
-        toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * 3); // 3 is a temp value because using rb.gravityscale wont work, grav scale is always changing
+        toApexTime = rb.linearVelocityY / (Physics2D.gravity.y * originalGravityScale); 
         toApexTime = Math.Abs(toApexTime); 
     }
 
-    public void CanDownForceManager()
-    {
+    public void CanDownForceManager() {
         if (rb.linearVelocityY < 0)
         {
             canApplyDownForce = false;
@@ -142,14 +126,13 @@ public class BirdJump : BirdCore
         }
     }
 
-    public void ApexSlowDownManager()
-    {
+    public void ApexSlowDownManager() {
+        // prolly combine these two or smth
         if (birdDash.isDashing || birdCollision.isTouchingWall) 
         {
             return;
         }
 
-        // for small floating point cases or the isgroundcheck being inaccurate
         if (curJump == null || birdCollision.isGrounded || rb.linearVelocityY == 0)
         {
             return;
@@ -164,20 +147,16 @@ public class BirdJump : BirdCore
             float slowDownGravity = Mathf.Lerp(originalGravityScale, originalGravityScale * 0.6f, fraction);
             rb.gravityScale = slowDownGravity; 
         }
-        else
-        {
+        else {
             rb.gravityScale = originalGravityScale; 
         }
     }
 
-    public IEnumerator BufferFirstJump()
-    {
+    public IEnumerator BufferFirstJump() {
         float elapsedTime = 0;
 
-        while (elapsedTime < firstJumpBuffer)
-        {
-            if(birdCollision.isGrounded)
-            {
+        while (elapsedTime < firstJumpBuffer) {
+            if(birdCollision.isGrounded) {
                 FirstJump();
                 yield break;
             }
@@ -187,64 +166,50 @@ public class BirdJump : BirdCore
         }
     }
 
-    public IEnumerator BufferAnyJump() 
-    {
+    public IEnumerator BufferAnyJump() {
         float elapsedTime = 0;
 
-        while (elapsedTime < firstJumpBuffer)
-        {
+        while (elapsedTime < firstJumpBuffer) {
             if (birdInput.TryPerformJump()) 
-            {
                 yield break;
-            }
 
             elapsedTime += Time.deltaTime;
             yield return null; 
         }
     }
 
-    public IEnumerator BufferDownForce()
-    { 
+    public IEnumerator BufferDownForce() { 
         // while time since jump is < .1
         float curJumpTimer = curJump.timer; 
-        while (curJump != null && curJump.timer < 0.1f) 
-        {
+        while (curJump != null && curJump.timer < 0.1f) {
             // if player jumps, cancel
             // checks if player's current jump changed at any point using timer
-            if(curJump.timer < curJumpTimer) {
+            if(curJump.timer < curJumpTimer)
                 yield break; 
-            }
 
             curJumpTimer = curJump.timer;
 
-            yield return null; // waits until the next frame to continue
+            yield return null; 
         }
 
         ExertDownForce(); 
     }
 
-    public void TryBufferDownForce()
-    {
+    public void TryBufferDownForce() {
         if (curJump != null && curJump.timer < 0.1f) // kinda bad bc .1f is repeated twice in the code. try to get a variable for this
-        {
             StartCoroutine(BufferDownForce());
-        }
         else
-        {
             ExertDownForce(); 
-        }
     }
 
 
-    public IEnumerator DisableWalkFromWallJump()
-    {
+    public IEnumerator DisableWalkFromWallJump() {
         birdWalk.disableWalk = true;
         yield return new WaitForSeconds(disableWalkTime);
         birdWalk.disableWalk = false; 
     }
 
-    void ManageTimers()
-    {
+    void ManageTimers() {
         first.timer += Time.deltaTime;
         second.timer += Time.deltaTime;
         wall.timer += Time.deltaTime;
@@ -252,37 +217,24 @@ public class BirdJump : BirdCore
         timeSinceOffGround += Time.deltaTime;
 
         if (birdCollision.isGrounded)
-        {
             timeSinceOffGround = 0;
-        }
 
         CalculateToApexTime();
     }
 
-    void InitializeVariables()
-    {
+    void InitializeVariables() {
         first.name = "first";
         first.force = new Vector2(0, 15);
-        first.threeFourthsTimeUp = 0.45f;
-        first.threeFourthsTimeDown = 0.60f;
-        first.threeFourthsVelocity = first.force.y / 2; // solved using phys, add to documentation later
 
         second.name = "second";
         second.force = new Vector2(0, 15);
-        second.threeFourthsTimeUp = 0.45f;
-        second.threeFourthsTimeDown = 0.60f;
 
         wall.name = "wall";
         wall.force = new Vector2(5, 15);
-        wall.threeFourthsTimeUp = 0.45f;
-        wall.threeFourthsTimeDown = 0.60f;
-
-        jumps = new List<Jump> { first, second, wall };
 
         foreach (var jump in jumps) {
             jump.timer = 0;
             jump.hasJumped = false; 
-            jump.threeFourthsVelocity = jump.force.y / 2;
         }
 
         originalGravityScale = rb.gravityScale;
