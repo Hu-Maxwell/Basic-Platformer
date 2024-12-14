@@ -72,7 +72,7 @@ public class BirdInput : BirdCore {
 
     public void HandleReleaseJumpInput() {
         if(birdJump.canApplyDownForce && !birdDash.isDashing) 
-            birdJump.TryBufferDownForce();
+            StartCoroutine(birdJump.TryBufferDownForce());
     }
 
     #endregion

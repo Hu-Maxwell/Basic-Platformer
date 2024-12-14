@@ -27,6 +27,7 @@ public class BirdJump : BirdCore {
     [HideInInspector] public float timeSinceOffGround;
 
     [HideInInspector] public bool canApplyDownForce = true;
+    public bool canLowerGravity = true; 
 
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float waitUntilDownForceTime = 0.1f;
@@ -45,7 +46,7 @@ public class BirdJump : BirdCore {
     void Update() {
         UpdateTimers();
 
-        AdjustGravityAtApex();
+        LowerGravityAtApex();
         UpdateDownForceState();
     }
 
@@ -59,6 +60,7 @@ public class BirdJump : BirdCore {
         jump.timer = 0;
 
         canApplyDownForce = true;
+        canLowerGravity = true; 
         curJump = jump;
     }
 
@@ -74,14 +76,16 @@ public class BirdJump : BirdCore {
         second.hasJumped = false;
 
         canApplyDownForce = true;
+        canLowerGravity = true; 
         curJump = wall;
 
-        StartCoroutine(DisableWalkTemporarily());
+        StartCoroutine(TempDisableWalk());
     }
 
     public void ExertDownForce() {
         rb.linearVelocityY = jumpDownVel;
         canApplyDownForce = false;
+        canLowerGravity = false; 
     }
 
     #endregion
@@ -89,7 +93,6 @@ public class BirdJump : BirdCore {
     #region buffers
 
     // combine bufferfirst and buffer avail? 
-
     public IEnumerator BufferFirstJump() {
         float elapsedTime = 0;
 
@@ -133,7 +136,7 @@ public class BirdJump : BirdCore {
         ExertDownForce(); 
     }
 
-    public IEnumerator DisableWalkTemporarily() {
+    public IEnumerator TempDisableWalk() {
         birdWalk.disableWalk = true;
         yield return new WaitForSeconds(disableWalkTime);
         birdWalk.disableWalk = false; 
@@ -153,38 +156,19 @@ public class BirdJump : BirdCore {
         toApexTime = Math.Abs(toApexTime); 
     }
 
-    public void UpdateDownForceState() {
-        if (rb.linearVelocityY < 0)
-        {
-            canApplyDownForce = false;
-            return;
-        }
-        
-        if (curJump == null)
-        {
-            return; 
-        }
-
-        float toApexTimeThreshold = 0.2f; // this line is repeated in ApexSlowDownManager 
-        if (toApexTime < toApexTimeThreshold) 
-        {
-            canApplyDownForce = false; 
-        }
-    }
-
-    public void AdjustGravityAtApex() {
-        // prolly combine these two or smth
+    public void LowerGravityAtApex() {
+        // if other functions need to change gravityscale or have applied a conflicting force
         if (birdDash.isDashing || birdCollision.isTouchingWall) 
-        {
             return;
-        }
 
+        // to check if this calculation should be done  
         if (curJump == null || birdCollision.isGrounded || rb.linearVelocityY == 0)
-        {
             return;
-        }
 
-        float toApexTimeThreshold = 0.2f;
+        if (!canLowerGravity)
+            rb.gravityScale = originalGravityScale; 
+
+        float toApexTimeThreshold = 0.1f;
 
         if (toApexTime < toApexTimeThreshold) {
             float fraction = 1 - (toApexTime / toApexTimeThreshold);
@@ -196,6 +180,13 @@ public class BirdJump : BirdCore {
         }
     }
 
+    public void UpdateDownForceState() {
+        if (rb.linearVelocityY < 0)
+        {
+            canApplyDownForce = false;
+            return;
+        }
+    }
     #endregion
 
     #region variable managers

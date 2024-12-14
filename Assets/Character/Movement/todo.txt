@@ -109,8 +109,10 @@ currently working on:
 - making function names consistent 
 - cleaning up birdInput -> birdJump -> birdCollision -> birdDirection 
     X. birdInput
-    
+    X. birdJump
 - adding summaries for every file
+
+X. removed downforce cancel at apex of jump because it made jumps feel unresponsive
 
 
 - weird bug that doesnt always apply downforce on every jump? hard to replicate 
