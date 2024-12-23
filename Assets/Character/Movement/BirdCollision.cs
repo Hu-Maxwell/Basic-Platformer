@@ -2,8 +2,7 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using UnityEngine;
 using System;
 
-public class BirdCollision : BirdCore
-{
+public class BirdCollision : BirdCore {
     [HideInInspector] public LayerMask levelLayer;
     [HideInInspector] public float rayLenX = 0.525f;
     [HideInInspector] public float rayLenY = 1.005f;
@@ -13,22 +12,19 @@ public class BirdCollision : BirdCore
     [HideInInspector] public bool isGrounded = false;
     [HideInInspector] public bool isTouchingWall = false;
 
-    void Start()
-    {
+    void Start() {
         levelLayer = LayerMask.GetMask("level");
         originalGravityScale = rb.gravityScale;
     }
 
-    void Update()
-    {
+    void Update() {
         CheckFloorCollision();
         CheckWallCollision();
 
         FrictionOnWallManager();
     }
 
-    public void CheckFloorCollision()
-    {
+    public void CheckFloorCollision() {
         if (birdJump.first.timer < ignoreGroundCheckTime)
         {
             return;
@@ -50,8 +46,7 @@ public class BirdCollision : BirdCore
         }
     }
 
-    public void CheckWallCollision()
-    {
+    public void CheckWallCollision() {
         RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(1.01f, 1.95f), 0, Vector2.left, 0, levelLayer);
 
         if (sideRay)
@@ -64,22 +59,18 @@ public class BirdCollision : BirdCore
         }
     }
 
-    public void FrictionOnWallManager() 
-    {
+    public void FrictionOnWallManager() {
         // if is going up or is dashing
-        if (birdDash.isDashing || !isTouchingWall) 
-        {
+        if (birdDash.isDashing || !isTouchingWall) {
             return;
         }
     
         float updatedGravityScale = rb.gravityScale; 
         
-        if (rb.linearVelocityY > 0) 
-        {
+        if (rb.linearVelocityY > 0) {
             rb.gravityScale = updatedGravityScale; 
         }
-        else if(rb.linearVelocityY < 0) 
-        {
+        else if(rb.linearVelocityY < 0) {
             rb.linearVelocityY = 0;
             rb.gravityScale = 0;
             rb.AddForce(new Vector2(0, -3), ForceMode2D.Impulse);

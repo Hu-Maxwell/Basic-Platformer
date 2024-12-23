@@ -106,14 +106,15 @@ X. also related bug: if player holds direction in wall, linear velocity y slowly
     - fixed by setting offset distance to 0 in composite collider 2d
 
 currently working on: 
-- making function names consistent 
-- cleaning up birdInput -> birdJump -> birdCollision -> birdDirection 
+X. making function names consistent 
+X. cleaning up birdInput -> birdJump -> birdCollision -> birdDirection 
     X. birdInput
     X. birdJump
+    X. birdCollision
+    X. birdDirection
 - adding summaries for every file
 
 X. removed downforce cancel at apex of jump because it made jumps feel unresponsive
-
 
 - weird bug that doesnt always apply downforce on every jump? hard to replicate 
 - sometimes dash goes downwards if applydownforce is done 
