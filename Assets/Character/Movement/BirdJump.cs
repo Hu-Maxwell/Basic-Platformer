@@ -4,6 +4,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using System;
 using UnityEngine.Rendering;
+using System.ComponentModel.Design;
 
 [System.Serializable]
 public class Jump {
@@ -32,7 +33,7 @@ public class BirdJump : BirdCore {
     [HideInInspector] public float coyoteTime = 0.1f;
     [HideInInspector] public float waitUntilDownForceTime = 0.1f;
     [HideInInspector] public float wallJumpBufferX;
-    [HideInInspector] public float firstJumpBuffer = 0.03f;
+    public float firstJumpBuffer = 0.03f;
     [HideInInspector] public float originalGravityScale; 
 
     [HideInInspector] public bool disableWalk = false;
@@ -107,12 +108,15 @@ public class BirdJump : BirdCore {
         }
     }
 
+    // this is for buffering jumps during dash 
     public IEnumerator BufferAvailableJump() {
         float elapsedTime = 0;
 
         while (elapsedTime < firstJumpBuffer) {
-            if (birdInput.TryPerformJump()) 
+            StartCoroutine(birdInput.CheckForSpaceUpInput());
+            if (birdInput.TryPerformJump()) {
                 yield break;
+            }
 
             elapsedTime += Time.deltaTime;
             yield return null; 
@@ -120,6 +124,9 @@ public class BirdJump : BirdCore {
     }
 
     public IEnumerator TryBufferDownForce() { 
+        if (birdDash.isDashing) 
+            yield break; 
+
         float curJumpTimer = curJump.timer; 
 
         // if player jumps, cancel

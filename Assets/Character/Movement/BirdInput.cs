@@ -3,6 +3,7 @@ using System.Collections; // allows for IEnumerator
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Unity.VisualScripting;
 using UnityEngine.AI;
+using Unity.Mathematics;
 
 public class BirdInput : BirdCore {
     void Update() {
@@ -22,6 +23,24 @@ public class BirdInput : BirdCore {
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
             HandleDashInput();
+    }
+
+    public IEnumerator CheckForSpaceUpInput() {
+        bool spaceUpDetected = false; 
+
+        while (birdDash.isDashing) {
+            if (Input.GetKeyUp(KeyCode.Space)) {
+                spaceUpDetected = true; 
+            } 
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(birdJump.waitUntilDownForceTime);
+
+        if(spaceUpDetected) {
+            birdJump.ExertDownForce(); 
+        }
     }
 
     #region movement handlers
@@ -44,8 +63,9 @@ public class BirdInput : BirdCore {
     }
 
     public bool TryPerformJump() {
-        if (birdDash.isDashing) 
+        if (birdDash.isDashing) {
             return false;
+        }
 
         if (CanPerformFirstJump()) {
             birdJump.FirstJump();
