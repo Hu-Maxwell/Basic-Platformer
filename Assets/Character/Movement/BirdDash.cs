@@ -35,7 +35,7 @@ public class BirdDash : BirdCore {
         rb.gravityScale = originalGravityScale;
 
         // prevents bird from looking in opposite dir after dash ends
-        if (Mathf.Sign(oldVelX) != birdDirection.lookingDirectionX)
+        if (Mathf.Sign(oldVelX) != birdDirection.lookingDirectionX || birdCollision.isTouchingWall) 
             rb.linearVelocityX = 0; 
         else
             rb.linearVelocityX = oldVelX;

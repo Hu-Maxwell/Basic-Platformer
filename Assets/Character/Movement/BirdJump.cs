@@ -127,7 +127,7 @@ public class BirdJump : BirdCore {
         if (birdDash.isDashing) 
             yield break; 
 
-        float curJumpTimer = curJump.timer; 
+        float curJumpTimer = 0; 
 
         // if player jumps, cancel
         while (curJump != null && curJump.timer < waitUntilDownForceTime) {

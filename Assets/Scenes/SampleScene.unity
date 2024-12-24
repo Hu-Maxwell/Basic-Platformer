@@ -208,6 +208,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
 --- !u!114 &349463750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,9 +227,9 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   isDashing: 0
   timeSinceDashEnd: 0
-  canDash: 1
   firstDash: 1
   originalGravityScale: 0
   dashMultiplier: 3.5
@@ -252,52 +253,39 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   first:
     name: 
     force: {x: 0, y: 0}
     timer: 0
     hasJumped: 0
-    threeFourthsTimeUp: 0
-    threeFourthsTimeDown: 0
-    threeFourthsVelocity: 0
   second:
     name: 
     force: {x: 0, y: 0}
     timer: 0
     hasJumped: 0
-    threeFourthsTimeUp: 0
-    threeFourthsTimeDown: 0
-    threeFourthsVelocity: 0
   wall:
     name: 
     force: {x: 0, y: 0}
     timer: 0
     hasJumped: 0
-    threeFourthsTimeUp: 0
-    threeFourthsTimeDown: 0
-    threeFourthsVelocity: 0
   curJump:
     name: 
     force: {x: 0, y: 0}
     timer: 0
     hasJumped: 0
-    threeFourthsTimeUp: 0
-    threeFourthsTimeDown: 0
-    threeFourthsVelocity: 0
   jumpDownVel: -3
   toApexTime: 0
   timeSinceOffGround: 0
-  isGrounded: 0
-  isTouchingWall: 0
   canApplyDownForce: 1
-  timeToThreeFourthsJumpHeight: 0.5
+  canLowerGravity: 1
   coyoteTime: 0.1
+  waitUntilDownForceTime: 0.1
   wallJumpBufferX: 0
-  firstJumpBuffer: 0.2
+  firstJumpBuffer: 0.1
   originalGravityScale: 0
   disableWalk: 0
   disableWalkTime: 0.1
-  timeScale: 1
 --- !u!114 &349463752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +304,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   disableWalk: 0
   moveSpeed: 5
   accelAmount: 10
@@ -339,6 +328,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   lookingDirectionX: 0
 --- !u!114 &349463754
 MonoBehaviour:
@@ -358,6 +348,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
 --- !u!114 &349463755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +367,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   levelLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -383,6 +375,8 @@ MonoBehaviour:
   rayLenY: 1.01
   ignoreGroundCheckTime: 0.05
   originalGravityScale: 0
+  isGrounded: 0
+  isTouchingWall: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,6 +1655,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
   spriteRenderer: {fileID: 1738828786}
   trailRenderer: {fileID: 1738828787}
   baseSprite: {fileID: -3835989009540464252, guid: 60e06196dee8d3445898ffa107951a65, type: 3}
@@ -1964,6 +1959,7 @@ MonoBehaviour:
   birdJump: {fileID: 0}
   birdDash: {fileID: 0}
   birdDirection: {fileID: 0}
+  birdCollision: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

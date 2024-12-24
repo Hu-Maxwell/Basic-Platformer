@@ -118,7 +118,8 @@ X. fixed bug where pressing jump messes up buffer
 
 X. removed downforce cancel at apex of jump because it made jumps feel unresponsive
 
-- weird bug that doesnt always apply downforce on every jump? hard to replicate 
+X. weird bug that doesnt always apply downforce on every jump? hard to replicate 
+    - fixed: assign values to 0 if possible 
 
 X. sometimes dash goes downwards if applydownforce is done 
 
@@ -126,6 +127,8 @@ X. dash does not apply down force if space is let go during jump during dash buf
     - if the player presses space AND lets go of it during the last .1s of a dash, a full height jump is executed instead of having a buffer for down force
 
 X. bird faces wrong direction if dashing off wall (easy fix)
+
+X. if bird dash buffer jumps after touching wall, the opposite force is a bit smaller
 
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
