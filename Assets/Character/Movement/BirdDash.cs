@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections; // allows for IEnumerator
+using System.Collections;
+using UnityEngine.AI; // allows for IEnumerator
 
 /// <summary>
 /// executes the bird's dash movement by applying horizontal velocity and disabling gravity
@@ -46,9 +47,11 @@ public class BirdDash : BirdCore {
 
     private float GetDashDirection() {
         // reverses direction if bird is touching wall
-        return birdCollision.isTouchingWall 
-            ? -birdDirection.lookingDirectionX 
-            : birdDirection.lookingDirectionX;
+        if(birdCollision.isTouchingWall) {
+            birdDirection.lookingDirectionX = -birdDirection.lookingDirectionX; 
+        }
+
+        return birdDirection.lookingDirectionX;
     }
 
     public IEnumerator Dash() {
