@@ -4,8 +4,9 @@ X. if player jumps in same spot, camera moves a little. make the target y value 
 - camera speed (acceleration, velocity) 
 
 - camera lookahead
+    - interpolation based off of vertical velocity (capped) 
 
-- camera corners
+- camera bounds 
 
 - make sure these functions are modular, can alternate between multiple camera forms and have one camera controller
 
@@ -15,3 +16,5 @@ X. if player jumps in same spot, camera moves a little. make the target y value 
     - areas where lookahead or camera zoom changes
 
 - camera looks up / down with w and s input (simply increases the lookahead) 
+
+- ledge detection (increases lookahead based off of whether a ledge is nearby) 
