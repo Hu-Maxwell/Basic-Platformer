@@ -1,8 +1,17 @@
-- if player jumps in same spot, camera moves a little. make the target y value always an int, and only changes when on a new platform 
-    -
+X. if player jumps in same spot, camera moves a little. make the target y value always an int, and only changes when on a new platform 
+    - bad way of managing camera
 
-- camera damping
+- camera speed (acceleration, velocity) 
 
-- camera dead zones
+- camera lookahead
 
-- camera looks up / down with w and s input
+- camera corners
+
+- make sure these functions are modular, can alternate between multiple camera forms and have one camera controller
+
+
+- ensure these can be easily implemented at any time
+    - camera boxed in in certain locations
+    - areas where lookahead or camera zoom changes
+
+- camera looks up / down with w and s input (simply increases the lookahead) 
