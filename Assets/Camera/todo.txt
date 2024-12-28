@@ -1,3 +1,5 @@
-- make camera ignore character's y pos if on ground level or within a threshold
+- camera clamping 
 
-- 
+- camera dead zones
+
+- camera looks up / down with w and s input
