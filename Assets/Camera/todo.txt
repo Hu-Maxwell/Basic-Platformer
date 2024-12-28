@@ -1,4 +1,5 @@
-- (camera y-val maximum = player last ground level + cameraLookUp) 
+- if player jumps in same spot, camera moves a little. make the target y value always an int, and only changes when on a new platform 
+    -
 
 - camera damping
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 
 public class BirdCollision : BirdCore {
-    public LayerMask levelLayer;
+    [HideInInspector] public LayerMask levelLayer;
     public float groundRayLenX;
     public float groundRayLenY;
     public float wallRayLenX;
