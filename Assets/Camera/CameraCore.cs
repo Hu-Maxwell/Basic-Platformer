@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class CameraCore : MonoBehaviour {
 
+    public BirdCollision birdCollision;
+
     void Start() {
         
     }

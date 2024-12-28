@@ -1,4 +1,6 @@
-- camera clamping 
+- (camera y-val maximum = player last ground level + cameraLookUp) 
+
+- camera damping
 
 - camera dead zones
 

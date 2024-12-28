@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraFollower : CameraCore
@@ -12,23 +13,29 @@ public class CameraFollower : CameraCore
     public float smoothSpeed = 0.125f;
     public Vector3 offset;
 
+    public float cameraLookUp = .8f; 
+    public float cameraY = 0; 
+
     void Start() {
         
     }
 
     void LateUpdate() {
-        if (targetTransform == null) {
+        if (targetTransform == null) 
             return;
-        }
+        
+
+        if(birdCollision.isGrounded)
+            cameraY = targetTransform.position.y; 
+
         Vector3 currentPosition = transform.position;
 
         Vector3 targetPosition = new Vector3(
-            targetTransform.position.x + offset.x,
-            Mathf.Max(targetTransform.position.y + offset.y, -1f), 
+            targetTransform.position.x,
+            cameraY, 
             currentPosition.z
         );
 
-        // Smoothly interpolate between the current position and the target position
         transform.position = Vector3.Lerp(currentPosition, targetPosition, smoothSpeed);
     }
 }
