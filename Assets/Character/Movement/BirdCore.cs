@@ -8,7 +8,7 @@ public class BirdCore : MonoBehaviour {
     [HideInInspector] public BirdJump birdJump;
     [HideInInspector] public BirdDash birdDash;
     [HideInInspector] public BirdDirection birdDirection; 
-    [HideInInspector] public BirdCollision birdCollision;
+    public BirdCollision birdCollision;
 
     void Awake() {
         birdInput = GetComponent<BirdInput>(); 

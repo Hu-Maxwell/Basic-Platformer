@@ -16,6 +16,9 @@ public class CameraFollower : CameraCore
     public float cameraLookUp = .8f; 
     public float cameraY = 0; 
 
+    public float dampingSpeed = 0.05f; 
+    private float velocityY = 0f; 
+
     void Start() {
         
     }
@@ -25,9 +28,10 @@ public class CameraFollower : CameraCore
             return;
         
 
-        if(birdCollision.isGrounded)
-            cameraY = targetTransform.position.y; 
-
+        if (birdCollision.isGrounded) {
+            cameraY = Mathf.SmoothDamp(cameraY, Mathf.Round(targetTransform.position.y), ref velocityY, dampingSpeed);
+        }
+        
         Vector3 currentPosition = transform.position;
 
         Vector3 targetPosition = new Vector3(

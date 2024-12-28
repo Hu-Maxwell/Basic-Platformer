@@ -3,14 +3,16 @@ using UnityEngine;
 using System;
 
 public class BirdCollision : BirdCore {
-    [HideInInspector] public LayerMask levelLayer;
-    [HideInInspector] public float rayLenX = 0.525f;
-    [HideInInspector] public float rayLenY = 1.005f;
+    public LayerMask levelLayer;
+    public float groundRayLenX;
+    public float groundRayLenY;
+    public float wallRayLenX;
+    public float wallRayLenY;
     [HideInInspector] public float ignoreGroundCheckTime = 0.05f;
     [HideInInspector] public float originalGravityScale;
 
-    [HideInInspector] public bool isGrounded = false;
-    [HideInInspector] public bool isTouchingWall = false;
+    public bool isGrounded = false;
+    public bool isTouchingWall = false;
 
     void Start() {
         levelLayer = LayerMask.GetMask("level");
@@ -30,7 +32,7 @@ public class BirdCollision : BirdCore {
             return;
         }
 
-        RaycastHit2D downRay = Physics2D.BoxCast(transform.position, new Vector2(0.95f, 2.01f), 0, Vector2.down, 0, levelLayer); // the vector2.down doesn't matter
+        RaycastHit2D downRay = Physics2D.BoxCast(transform.position, new Vector2(groundRayLenX, groundRayLenY), 0, Vector2.down, 0, levelLayer); // the vector2.down doesn't matter
 
         if (downRay)
         {
@@ -47,7 +49,7 @@ public class BirdCollision : BirdCore {
     }
 
     public void CheckWallCollision() {
-        RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(1.01f, 1.95f), 0, Vector2.left, 0, levelLayer);
+        RaycastHit2D sideRay = Physics2D.BoxCast(transform.position, new Vector2(wallRayLenX, wallRayLenY), 0, Vector2.left, 0, levelLayer);
 
         if (sideRay)
         {
