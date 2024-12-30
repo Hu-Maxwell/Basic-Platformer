@@ -5,7 +5,7 @@ X. camera speed (acceleration, velocity)
     - bad method too, Math.lerp is simpler 
     - has to be used in fixedupdate
 
-- camera lookahead
+X. camera lookahead
     - interpolation based off of vertical velocity (capped) 
 
 - camera bounds 
