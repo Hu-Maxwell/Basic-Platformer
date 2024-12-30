@@ -1,7 +1,9 @@
 X. if player jumps in same spot, camera moves a little. make the target y value always an int, and only changes when on a new platform 
     - bad way of managing camera
 
-- camera speed (acceleration, velocity) 
+X. camera speed (acceleration, velocity)  
+    - bad method too, Math.lerp is simpler 
+    - has to be used in fixedupdate
 
 - camera lookahead
     - interpolation based off of vertical velocity (capped) 
@@ -9,7 +11,6 @@ X. if player jumps in same spot, camera moves a little. make the target y value 
 - camera bounds 
 
 - make sure these functions are modular, can alternate between multiple camera forms and have one camera controller
-
 
 - ensure these can be easily implemented at any time
     - camera boxed in in certain locations

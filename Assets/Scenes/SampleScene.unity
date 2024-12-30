@@ -177,7 +177,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -371,10 +371,10 @@ MonoBehaviour:
   levelLayer:
     serializedVersion: 2
     m_Bits: 0
-  groundRayLenX: 0
-  groundRayLenY: 0
-  wallRayLenX: 0
-  wallRayLenY: 0
+  groundRayLenX: 0.95
+  groundRayLenY: 2.02
+  wallRayLenX: 1.02
+  wallRayLenY: 1.95
   ignoreGroundCheckTime: 0.05
   originalGravityScale: 0
   isGrounded: 0
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bba43841a8e037d49839b6694d1e2c77, type: 3}
   m_Name: 
@@ -539,18 +539,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 977a2948bb774e847b0540b3e2ce74e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   birdCollision: {fileID: 349463755}
-  targetTransform: {fileID: 349463746}
-  smoothSpeed: 0.1
-  offset: {x: 0, y: 0, z: 0}
-  cameraLookUp: 0.8
-  cameraY: 0
-  dampingSpeed: 0.05
+  playerTransform: {fileID: 349463746}
+  smoothFactor: 4
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,7 +554,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adbc7c039a99db342a3f65049efd4eeb, type: 3}
   m_Name: 
@@ -1548,7 +1544,7 @@ CompositeCollider2D:
       - {x: 10, y: -5}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0
-  m_UseDelaunayMesh: 0
+  m_UseDelaunayMesh: 1
   m_CompositeGameObject: {fileID: 799304123}
 --- !u!50 &799304130
 Rigidbody2D:
@@ -1708,8 +1704,8 @@ MonoBehaviour:
   birdCollision: {fileID: 0}
   spriteRenderer: {fileID: 1738828786}
   trailRenderer: {fileID: 1738828787}
-  baseSprite: {fileID: -3835989009540464252, guid: 60e06196dee8d3445898ffa107951a65, type: 3}
-  walkingSprite: {fileID: 3306127928106812581, guid: 3a3dd37fb7ea7e24eb8b3e38b96d8004, type: 3}
+  baseSprite: {fileID: -6129259776082303829, guid: 623f7c859df41994299e8f22024219d7, type: 3}
+  walkingSprite: {fileID: 8243303155844396159, guid: 27f07c0cd0c67fd4aa7d7351d54b20cd, type: 3}
 --- !u!212 &1738828786
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1940,7 +1936,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 349463746}

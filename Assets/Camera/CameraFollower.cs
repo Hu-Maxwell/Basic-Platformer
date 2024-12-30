@@ -1,45 +1,44 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+/// <summary>
+/// makes camera follow the character around
+/// </summary>
 public class CameraFollower : CameraCore
 {
-    /// <summary>
-    /// makes camera follow the character around
-    /// </summary>
-    /// 
+    public Transform playerTransform; // bird's transform
 
-    // take bird's transform (for camera follower)
-    public Transform targetTransform; 
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
-
-    public float cameraLookUp = .8f; 
-    public float cameraY = 0; 
-
-    public float dampingSpeed = 0.05f; 
-    private float velocityY = 0f; 
+    public float smoothFactor;
 
     void Start() {
         
     }
 
     void LateUpdate() {
-        if (targetTransform == null) 
+        if (playerTransform == null) 
             return;
+
+        // run through AddLookahead to calculate targetPosition 
+        Transform targetPosition = AddLookahead(playerTransform); 
+
+        // run through SmoothCameraFollow to smoothly move 
+        SmoothCameraFollow(targetPosition); 
+    }
+
+    public void SmoothCameraFollow(Transform targetPosition) { 
+        Vector3 targetPos = targetPosition.position;
+        targetPos.z = transform.position.z; 
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * smoothFactor);
+    }
+
+    // takes the player's position and returns it with the lookahead added to it
+    public Transform AddLookahead(Transform playerTransform) {
+        Vector3 targetposition = playerTransform.position; 
         
 
-        if (birdCollision.isGrounded) {
-            cameraY = Mathf.SmoothDamp(cameraY, Mathf.Round(targetTransform.position.y), ref velocityY, dampingSpeed);
-        }
-        
-        Vector3 currentPosition = transform.position;
-
-        Vector3 targetPosition = new Vector3(
-            targetTransform.position.x,
-            cameraY, 
-            currentPosition.z
-        );
-
-        transform.position = Vector3.Lerp(currentPosition, targetPosition, smoothSpeed);
+        return playerTransform;
     }
 }
