@@ -13,10 +13,6 @@ public class CameraFollower : CameraCore
     public float smoothFactor;
     public float lookaheadDistance; 
 
-    void Start() {
-        
-    }
-
     void LateUpdate() {
         if (playerTransform == null) 
             return;

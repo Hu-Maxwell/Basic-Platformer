@@ -9,9 +9,9 @@ public class CameraCore : MonoBehaviour {
 
     public BirdCollision birdCollision;
     public BirdDirection birdDirection; 
+    public Collider2D cameraArea; 
 
     void Start() {
-        
     }
 
     void Update() {
