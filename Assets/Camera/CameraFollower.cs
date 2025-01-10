@@ -51,7 +51,7 @@ public class CameraFollower : CameraCore
         targetposition.x += lookaheadDistance * birdDirection.lookingDirectionX; 
 
         // if input pressed 
-        targetposition.y += cameraInput.CheckInputs(); 
+        targetposition.y += cameraInput.AddLookaheadY(); 
 
         return targetposition;
     }

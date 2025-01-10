@@ -535,6 +535,10 @@ MonoBehaviour:
   birdCollision: {fileID: 0}
   birdDirection: {fileID: 0}
   cameraArea: {fileID: 0}
+  cameraFollower: {fileID: 0}
+  cameraInput: {fileID: 0}
+  lookKeyHeldTimer: 0
+  cameraLookahead: 2
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +554,8 @@ MonoBehaviour:
   birdCollision: {fileID: 349463755}
   birdDirection: {fileID: 349463753}
   cameraArea: {fileID: 519420036}
+  cameraFollower: {fileID: 519420034}
+  cameraInput: {fileID: 519420033}
   playerTransform: {fileID: 349463746}
   smoothFactor: 2
   lookaheadDistance: 1
@@ -571,6 +577,8 @@ MonoBehaviour:
   birdCollision: {fileID: 349463755}
   birdDirection: {fileID: 349463753}
   cameraArea: {fileID: 519420036}
+  cameraFollower: {fileID: 519420034}
+  cameraInput: {fileID: 519420033}
 --- !u!61 &519420036
 BoxCollider2D:
   m_ObjectHideFlags: 0
