@@ -11,6 +11,9 @@ public class CameraCore : MonoBehaviour {
     public BirdDirection birdDirection; 
     public Collider2D cameraArea; 
 
+    public CameraFollower cameraFollower;
+    public CameraInput cameraInput; 
+
     void Start() {
     }
 

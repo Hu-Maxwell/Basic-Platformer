@@ -7,30 +7,34 @@ public class CameraInput : CameraCore {
     /// moves the camera around based off of user input
     /// </summary>
     
-    public float lookKeyHeldTimer; 
-
+    [HideInInspector] public float lookKeyHeldTimer;
+    public float cameraLookahead; 
 
     void Start() {
         
     }
 
     void Update() {
-        CheckInputs();
+        
     }
 
-    public void CheckInputs() { 
+    public float CheckInputs() { 
         if (Input.GetKey(KeyCode.W)) {
             lookKeyHeldTimer+= Time.deltaTime;
-            if (lookKeyHeldTimer >= 2) {
-                ShiftCameraY(); 
-            }
-        } else {
-            lookKeyHeldTimer = 0; 
-        }
-    }
 
-    // takes as a parameter whether to look up or down, then looks wherever
-    void float ShiftCameraY() {
-        return 
+            if (lookKeyHeldTimer >= 2) 
+                return cameraLookahead; 
+            else 
+                return 0; 
+
+        } 
+        else if (Input.GetKey(KeyCode.S)) {
+            // TODO
+            return 0;
+        }
+        else 
+        {
+            return 0; 
+        }
     }
 }

@@ -10,6 +10,10 @@ X. camera lookahead
 
 X. camera bounds 
 
+- CameraInput looking up works but the timer doesn't reset 
+
+- add camerainput for looking down
+
 - make sure these functions are modular, can alternate between multiple camera forms and have one camera controller
 
 - ensure these can be easily implemented at any time
