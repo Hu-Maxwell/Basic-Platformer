@@ -132,6 +132,8 @@ X. if bird dash buffer jumps after touching wall, the opposite force is a bit sm
 
 - always weird rounding error with .015, never exactly at wall - not a tilemap issue, but a bird collider issue
 
+- if you hit your head it counts as grounded
+
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
 

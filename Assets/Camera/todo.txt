@@ -8,7 +8,7 @@ X. camera speed (acceleration, velocity)
 X. camera lookahead
     - interpolation based off of vertical velocity (capped) 
 
-- camera bounds 
+X. camera bounds 
 
 - make sure these functions are modular, can alternate between multiple camera forms and have one camera controller
 
