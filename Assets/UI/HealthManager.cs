@@ -1,9 +1,10 @@
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour {
-    public SpriteRenderer container;
+    public Image container;
     public Sprite fill;
     public Sprite empty;
     
