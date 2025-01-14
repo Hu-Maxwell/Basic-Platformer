@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+// this kinda sucks cuz steps play even if in air, also same sound effect 
+
 public class BirdAudio : BirdCore {
 
     private AudioSource audioSource;
@@ -15,8 +17,8 @@ public class BirdAudio : BirdCore {
 
         audioSource = GetComponent<AudioSource>();
 
-        // if (audioSource == null) 
-        //     audioSource = gameObject.AddComponent<AudioSource>();
+        if (audioSource == null) 
+            audioSource = gameObject.AddComponent<AudioSource>();
 
         audioSource.clip = stepSound;
     }
