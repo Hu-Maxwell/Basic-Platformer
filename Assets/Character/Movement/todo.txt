@@ -134,6 +134,9 @@ X. if bird dash buffer jumps after touching wall, the opposite force is a bit sm
 
 - if you hit your head it counts as grounded
 
+- sometimes it doesn't register as touching wall correctly
+    - caused by a weird unity rounding error just extend the boxcast
+
 notable features:
 	- if dash doesn't disable any input, jumping while dashing can be pretty fun
 
