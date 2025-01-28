@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 
 public class HealthDisplay : MonoBehaviour {
+    public HealthManager healthManager;
+
     public GameObject heartPrefab; 
     public Transform heartContainer;
     public Sprite fill; 
     public Sprite empty;
 
     void Start() {
-        UpdateHealthDisplay(3, 3); // todo: should ASK health manager first for maxHealth and curHealth 
+        UpdateHealthDisplay(healthManager.CurHealth, healthManager.MaxHealth); // todo: should ASK health manager first for maxHealth and curHealth 
     }
 
     // updates health display 

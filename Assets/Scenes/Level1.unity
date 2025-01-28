@@ -787,7 +787,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthDisplay: {fileID: 1115984532}
-  tick: 0
+  startingCurHealth: 3
+  startingMaxHealth: 3
+  maxTick_: 0
+  curTick_: 0
 --- !u!1 &799304123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1837,6 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a45dfdf76fe60fe48bb154001742748e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthManager: {fileID: 711401107}
   heartPrefab: {fileID: 6356941739657361712, guid: 26a8415dff7f44a4a9dd439451c96e36, type: 3}
   heartContainer: {fileID: 1115984531}
   fill: {fileID: -1006342437670619837, guid: 3d1438d668056cc48bd5f855c52a42b0, type: 3}

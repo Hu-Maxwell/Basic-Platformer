@@ -1,0 +1,6 @@
+- limit max health
+
+- time since last damage implementation 
+
+- if cur health > max health, it will make it so that when max health is added, it will be a full heart
+    - simply limit cur health so its less than max health
