@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f5ba81fe709e375ceb06847ea74cb7f4
+guid: 23a73a4507b500848aadcc8c2367bc83
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4934884233632530507
-    second: tit_gruvbox_0
+      213: 2111727716445480112
+    second: empty_heart_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tit_gruvbox_0
+      name: empty_heart_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2400
-        height: 1537
+        width: 19
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5bf38a68fe4c38bb0800000000000000
-      internalID: -4934884233632530507
+      spriteID: 0b464117b2d5e4d10800000000000000
+      internalID: 2111727716445480112
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tit_gruvbox_0: -4934884233632530507
+      empty_heart_0: 2111727716445480112
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
