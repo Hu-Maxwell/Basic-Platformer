@@ -10,7 +10,7 @@ public class SkeletonBase : Enemy {
     private void Start() {
         // inject default behaviors
         SetAttackBehavior(new MeleeAttack());
-        SetMovementBehavior(new PatrolMovement());
+        SetMovementBehavior(new PatrolMovement(.1f, 3f)); // TODO: patrol movement should also be able to take nothing as a param in future, so change later
     }
 
     void Update() { // does having Update in this class adhere to SOLID principles? 
