@@ -1,5 +1,5 @@
 namespace Game.Interfaces {
     public interface IMovementBehavior {
-        void Move();
+        void Move(Enemy enemy);
     }
 }

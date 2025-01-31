@@ -2022,6 +2022,37 @@ MonoBehaviour:
   birdCollision: {fileID: 0}
   stepSound: {fileID: 8300000, guid: af7aeb85c5c70f14da15219960a63ca1, type: 3}
   timeBetweenStep: 0.2
+--- !u!1 &1350767358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1350767359}
+  m_Layer: 0
+  m_Name: Skeleton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1350767359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350767358}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.649436, y: 0.48371655, z: 0.3999152}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415522643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2553,3 +2584,4 @@ SceneRoots:
   - {fileID: 349463746}
   - {fileID: 976429745}
   - {fileID: 1986407495}
+  - {fileID: 1350767359}
