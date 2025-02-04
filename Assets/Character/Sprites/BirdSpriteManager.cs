@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// UNUSED
 public class BirdSpriteManager : BirdCore {
     public SpriteRenderer spriteRenderer;
     public TrailRenderer trailRenderer;
@@ -21,20 +22,19 @@ public class BirdSpriteManager : BirdCore {
     void Update() {
         UpdateBirdSpriteDirection();
 
-        UpdateBirdSpriteWalK();
+        UpdateBirdSpriteWalk();
 
         TrailManager();
     }
 
     public void UpdateBirdSpriteDirection() {
-
         if (birdDirection.lookingDirectionX == -1)
             spriteRenderer.flipX = false;
         if (birdDirection.lookingDirectionX == 1)
             spriteRenderer.flipX = true;
     }
 
-    public void UpdateBirdSpriteWalK() {
+    public void UpdateBirdSpriteWalk() {
 
         if (Mathf.Abs(rb.linearVelocityX) > 0.2f)
             spriteRenderer.sprite = walkingSprite;
