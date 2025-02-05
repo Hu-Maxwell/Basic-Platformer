@@ -10,6 +10,10 @@ public class BirdJumpAnimator : BirdAnimatorCore {
     }
 
     private void UpdateJumpSprite() {
+        if (birdDash.isDashing) {
+            return; 
+        }
+        
         if (Math.Abs(rb.linearVelocityY) > 1.0f) {
             animator.enabled = false;
         } else {
