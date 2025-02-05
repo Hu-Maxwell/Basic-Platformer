@@ -7,8 +7,8 @@ public class Enemy : MonoBehaviour {
     protected IAttackBehavior attackBehavior;
 
     [SerializeField] private float health = 100f; 
-    [SerializeField] private float speed = 1f; 
-    [SerializeField] private int damage = 1; 
+    // [SerializeField] private float speed = 1f; 
+    // [SerializeField] private int damage = 1; 
 
     public void SetMovementBehavior(IMovementBehavior newMovement) {
         movementBehavior = newMovement;

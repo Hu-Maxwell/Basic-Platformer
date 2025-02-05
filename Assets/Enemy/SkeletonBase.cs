@@ -1,11 +1,13 @@
 using UnityEngine;
 using Game.Interfaces;
+using System;
+using Unity.VisualScripting;
 
 // this is a script that is attached to the skeleton prefab 
 
 public class SkeletonBase : Enemy {
-    public bool DebugTickAttack;
-    public bool DebugTickMove;  
+    [SerializeField] private Rigidbody2D rb; // this this a clean way to get rb in here? 
+    [SerializeField] private Rigidbody2D enemyRb; // TEMPORARY  
 
     private void Start() {
         // inject default behaviors
@@ -21,9 +23,10 @@ public class SkeletonBase : Enemy {
         Move(this); 
     }
 
-
     private void CheckMovementSwitch() {
-        // if player is close enough, switch to chase
-        // if not close enough, switch to patrol
+        if (Math.Abs(rb.position.x - transform.position.x) < 2.0f) {
+            SetMovementBehavior(new ChaseMovement(rb, enemyRb)); 
+            Debug.Log("switched");
+        }
     }
 }
